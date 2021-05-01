@@ -1,6 +1,8 @@
-package com.example.comptictactoe;
+package com.example.comptictactoe.Model;
 
-//abstract class for determining our GamePiece
+/**
+ * Abstract Class for GamePiece
+ */
 abstract class AbstractGamePiece implements GamePiece {
 
     @Override

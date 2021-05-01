@@ -1,4 +1,4 @@
-package com.example.comptictactoe;
+package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,8 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.comptictactoe.Model.EmptyGP;
+import com.example.comptictactoe.Model.GamePiece;
+import com.example.comptictactoe.Model.O;
+import com.example.comptictactoe.Model.Player;
+import com.example.comptictactoe.R;
+import com.example.comptictactoe.Model.TicTacToe;
+import com.example.comptictactoe.Model.X;
+
 import java.util.HashMap;
 
+/**
+ * Activity to Represent our 3x3 grid
+ */
 public class GameActivity3x3 extends AppCompatActivity {
 
     TicTacToe game;
@@ -308,7 +320,7 @@ public class GameActivity3x3 extends AppCompatActivity {
             int colIndexBefore = indexBefore % game.getGrid().size();
             int rowIndexAfter = indexAfter / game.getGrid().size();
             int colIndexAfter = indexAfter % game.getGrid().size();
-            game.moveCurrentGP(rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
+            game.swapPieces(rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
 
 
             Player p1 = game.getPlayer(true);
@@ -316,6 +328,7 @@ public class GameActivity3x3 extends AppCompatActivity {
 
             TextView t = findViewById(R.id.movePieceText);
             t.setVisibility(View.INVISIBLE);
+
             //check if game is over
             if (p1.getCurrentTurn() && p1.getTurnMade()) {
                 p1.setTurnMade(false);

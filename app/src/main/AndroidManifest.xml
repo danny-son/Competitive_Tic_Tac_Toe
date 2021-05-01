@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CompTicTacToe">
-        <activity android:name=".GameActivity3x3" android:label="Game"
-             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.comptictactoe.View.GameActivity3x3" android:label="Game"
+             android:parentActivityName="com.example.comptictactoe.View.MainActivity"></activity>
+        <activity android:name="com.example.comptictactoe.View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package com.example.comptictactoe;
+package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-//Start of the Main Page:
+import com.example.comptictactoe.R;
+
+/**
+ * The Main Activity, the page that first displays when users first open the app
+ */
 public class MainActivity extends AppCompatActivity {
 
     String p1 = "";
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     //OnClick to go to the next page
     public void nextPage(View v) {
+
         if (p1.equals("") || p2.equals("")) {
             Toast.makeText(this, "Both players need to enter their Name!",
                     Toast.LENGTH_LONG).show();
