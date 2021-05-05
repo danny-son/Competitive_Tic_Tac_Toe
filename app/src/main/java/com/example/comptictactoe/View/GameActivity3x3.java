@@ -122,11 +122,11 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                     p2.getCurrentTurn() && !p2.getTurnMade()) {
                 Toast.makeText(this,"Your Turn was Already Used! Either end " +
                                 "your turn or Spend Credits to buy an Extra Turn.",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception e) {
-            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -241,9 +241,28 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         if ((p1.getCurrentTurn() && !p1.getTurnMade()) || p2.getCurrentTurn() && !p2.getTurnMade()) {
             Toast.makeText(this,"Your Turn was Already Used! Either end " +
                             "your turn or Spend Credits to buy an Extra Turn.",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
         else if (b == findViewById(R.id.delete)) {
+            boolean playerOneDeleteValid = false;
+            boolean playerTwoDeleteValid = false;
+            for (int r = 0; r < game.getGrid().size(); r++) {
+                for (int c = 0; c < game.getGrid().get(r).size(); c++) {
+                    if (game.getGrid().get(r).get(c).equals(p1.getGP())) {
+                        playerTwoDeleteValid = true;
+                    }
+                    else if (game.getGrid().get(r).get(c).equals(p2.getGP())) {
+                        playerOneDeleteValid = true;
+                    }
+                }
+            }
+            if ((p1.getCurrentTurn() && !playerOneDeleteValid) ||
+                    (p2.getCurrentTurn() &&!playerTwoDeleteValid)) {
+                Toast.makeText(this, "Delete can only be performed " +
+                        "if your opponent has " +
+                        "a game piece on the grid!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             text = "Select Piece To Delete:";
             t.setText(text);
             delete = true;
@@ -277,19 +296,25 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void editPiece(View v) {
         //first time we select the piece
         if (delete) {
+            Player p1 = game.getPlayer(true);
+            Player p2 = game.getPlayer(false);
             Button b = (Button)v;
+
             int index = buttonMapDuplicate.get(b);
             int row = index / game.getGrid().size();
             int col = index % game.getGrid().size();
-            game.getGrid().get(row).set(col, new EmptyGP());
+            if ((p1.getCurrentTurn() && !game.getGrid().get(row).get(col).isOGamePiece())
+                    || (p2.getCurrentTurn() && !game.getGrid().get(row).get(col).isXGamePiece())) {
+                Toast.makeText(this,"You can Only delete your opponent's game piece",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            game.deletePiece(row,col);
             //update & edit our Buttons
             resetMovesButtons();
             findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
 
             //reset our two buttons we selected
-            Player p1 = game.getPlayer(true);
-            Player p2 = game.getPlayer(false);
-
             if (p1.getCurrentTurn() && p1.getTurnMade()) {
                 p1.setTurnMade(false);
             }
