@@ -32,7 +32,7 @@ public interface TicTacToeModel {
     void makeMove(Player player, int row, int column);
 
     /**
-     * Increases the Grid Size
+     * Increases the Grid Size each by 2 for number of rows and columns
      */
     void increaseGrid();
 

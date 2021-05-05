@@ -64,7 +64,7 @@ public class TicTacToe implements TicTacToeModel {
                    return true;
                }
            }
-           else if (i == 1) {
+           else  {
                if (checkDiagonal(gameBoard, p.getGP(), rowSize -1)) {
                    return true;
                }
@@ -123,7 +123,7 @@ public class TicTacToe implements TicTacToeModel {
      */
     private boolean checkDiagonal(ArrayList<ArrayList<GamePiece>> gameBoard, GamePiece gp, int row) {
         boolean isConnected = true;
-        //
+
         if (row == 0) {
             for (int r = row; r < rowSize; r++) {
                 if (!gp.equals(gameBoard.get(r).get(r))){
@@ -134,7 +134,7 @@ public class TicTacToe implements TicTacToeModel {
         }
         else if (row == rowSize -1) {
             for (int r = row; r >= 0; r--) {
-                if (!gp.equals(gameBoard.get(r).get(r))) {
+                if (!gp.equals(gameBoard.get(r).get(row - r))) {
                     isConnected = false;
                     break;
                 }

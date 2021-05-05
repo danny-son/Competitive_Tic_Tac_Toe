@@ -16,13 +16,14 @@ import com.example.comptictactoe.Model.Player;
 import com.example.comptictactoe.R;
 import com.example.comptictactoe.Model.TicTacToe;
 import com.example.comptictactoe.Model.X;
+import com.example.comptictactoe.ViewModel.IViewModelGamePlay;
 
 import java.util.HashMap;
 
 /**
  * Activity to Represent our 3x3 grid
  */
-public class GameActivity3x3 extends AppCompatActivity {
+public class GameActivity3x3 extends AppCompatActivity implements IViewModelGamePlay {
 
     TicTacToe game;
     HashMap<Button,Integer> buttonMap = new HashMap<Button, Integer>();
@@ -84,7 +85,7 @@ public class GameActivity3x3 extends AppCompatActivity {
         enableOrDisableAllButtons(buttonMapDuplicate,false);
 
 
-        buttonMovesMap.put((Button) findViewById(R.id.move), 3);
+        buttonMovesMap.put((Button) findViewById(R.id.swap), 3);
         buttonMovesMap.put((Button) findViewById(R.id.endTurn),0);
         buttonMovesMap.put((Button) findViewById(R.id.delete), 4);
         buttonMovesMap.put((Button) findViewById(R.id.place),0);
@@ -92,7 +93,7 @@ public class GameActivity3x3 extends AppCompatActivity {
     }
 
     //OnClick when player selects to place a piece
-    public void placePiece(View v) {
+    public void placePieceInit(View v) {
         TextView movePieceText = findViewById(R.id.movePieceText);
         text = "Place a piece";
         movePieceText.setText(text);
@@ -102,7 +103,7 @@ public class GameActivity3x3 extends AppCompatActivity {
     }
 
     //OnClick method when player selects an area to place their piece
-    public void playerMove(View v) {
+    public void placePiece(View v) {
         Button b = (Button)v;
         int index = buttonMap.get(b);
         int rowIndex = index / game.getGrid().size();
@@ -112,10 +113,10 @@ public class GameActivity3x3 extends AppCompatActivity {
         try {
 
             if (p1.getCurrentTurn() && p1.getTurnMade()) {
-                playerMoveHelper(p1, rowIndex, colIndex);
+                placePieceHelper(p1, rowIndex, colIndex);
             }
             else if (p2.getCurrentTurn() && p2.getTurnMade()) {
-                playerMoveHelper(p2, rowIndex, colIndex);
+                placePieceHelper(p2, rowIndex, colIndex);
             }
             else if ((p1.getCurrentTurn() && !p1.getTurnMade()) ||
                     p2.getCurrentTurn() && !p2.getTurnMade()) {
@@ -130,8 +131,8 @@ public class GameActivity3x3 extends AppCompatActivity {
     }
 
 
-    //helper for the player to make a move
-    public void playerMoveHelper(Player player, int row, int col) {
+    //helper for the player to swap between two pieces
+    public void placePieceHelper(Player player, int row, int col) {
         game.makeMove(player,row,col);
         findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
         player.setTurnMade(false);
@@ -161,7 +162,7 @@ public class GameActivity3x3 extends AppCompatActivity {
                 b.setClickable(true);
             }
         }
-        else if (!clickable) {
+        else  {
             for (Button b: map.keySet()) {
                 b.setClickable(false);
             }
@@ -203,7 +204,7 @@ public class GameActivity3x3 extends AppCompatActivity {
                 }
             }
         }
-        else if (!emptyPieces) {
+        else  {
             for (Button b: map.keySet()) {
                 int index = map.get(b);
                 int rowIndex = index / game.getGrid().size();
@@ -223,7 +224,7 @@ public class GameActivity3x3 extends AppCompatActivity {
                 b.setVisibility(View.VISIBLE);
             }
         }
-        else if (!enable){
+        else {
             for (Button b: map.keySet()) {
                 b.setClickable(false);
                 b.setVisibility(View.GONE);
@@ -232,7 +233,7 @@ public class GameActivity3x3 extends AppCompatActivity {
     }
 
     //performs operations to show text
-    public void movePieceInit(View v) {
+    public void editPieceInit(View v) {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
         Button b = (Button)v;
@@ -247,7 +248,7 @@ public class GameActivity3x3 extends AppCompatActivity {
             t.setText(text);
             delete = true;
         }
-        else if (b == findViewById(R.id.move)) {
+        else if (b == findViewById(R.id.swap)) {
             text = "Select Piece To Move:";
             t.setText(text);
         }
@@ -273,7 +274,7 @@ public class GameActivity3x3 extends AppCompatActivity {
 
 
     //selecting our pieces based on either move or delete
-    public void movePiece(View v) {
+    public void editPiece(View v) {
         //first time we select the piece
         if (delete) {
             Button b = (Button)v;
@@ -299,7 +300,7 @@ public class GameActivity3x3 extends AppCompatActivity {
             click.setClickable(true);
         }
 
-        //first time we select move
+        //first time we select swap
         else if (buttonSelect == null) {
             buttonSelect = (Button)v;
             TextView t = findViewById(R.id.movePieceText);
@@ -309,10 +310,10 @@ public class GameActivity3x3 extends AppCompatActivity {
             buttonSelect.setClickable(false);
         }
 
-        //second time we select the piece and create the move
+        //second time we select the piece and create the swap
         else if (buttonMove == null) {
 
-            //performs the move on pieces
+            //performs the swap on pieces
             buttonMove = (Button) v;
             int indexBefore = buttonMapDuplicate.get(buttonSelect);
             int indexAfter = buttonMapDuplicate.get(buttonMove);
@@ -356,7 +357,7 @@ public class GameActivity3x3 extends AppCompatActivity {
             //show player score and interface
         }
         else if (p2.getCurrentTurn()) {
-            text = "It's " + p1.getName() + "'s Turn!";
+            text = "It's " + p2.getName() + "'s Turn!";
             t.setText(text);
             //show player score and interface
         }
