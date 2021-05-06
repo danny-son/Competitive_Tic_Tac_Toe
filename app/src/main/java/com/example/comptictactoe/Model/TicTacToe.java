@@ -10,6 +10,7 @@ public class TicTacToe implements TicTacToeModel {
     private int rowSize;
     private int colSize;
     private ArrayList<ArrayList<GamePiece>> gameBoard;
+    private int turnNumber;
 
     //different Size constructor;
     public TicTacToe(Player p1, Player p2, int row, int col) {
@@ -23,6 +24,7 @@ public class TicTacToe implements TicTacToeModel {
             this.colSize = col;
         }
         this.gameBoard = createGrid(this.rowSize, this.colSize);
+        this.turnNumber = 0;
     }
 
 
@@ -167,11 +169,6 @@ public class TicTacToe implements TicTacToeModel {
                 gameBoard.get(row).get(column).isEmptyGamePiece();
     }
 
-    @Override
-    public void increaseGrid() {
-        this.rowSize = rowSize + 2;
-        this.colSize = colSize + 2;
-    }
 
 
     @Override
@@ -200,6 +197,7 @@ public class TicTacToe implements TicTacToeModel {
             p1.setCurrentTurn(true);
             p1.setTurnMade(false);
         }
+        turnNumber++;
     }
 
     @Override
@@ -208,10 +206,35 @@ public class TicTacToe implements TicTacToeModel {
     }
 
     @Override
-    public void setGrid(ArrayList<ArrayList<GamePiece>> newGrid) {
-        this.gameBoard = newGrid;
+    public void increaseGrid() {
+        try{
+            this.rowSize = rowSize + 2;
+            this.colSize = colSize + 2;
+            ArrayList<ArrayList<GamePiece>> newGrid = new ArrayList<ArrayList<GamePiece>>();
+            for (int r = 0; r < rowSize; r++) {
+                ArrayList<GamePiece> newRow = new ArrayList<GamePiece>();
+                for (int c = 0; c < colSize; c++) {
+                    if ((r == 0 || r == rowSize - 1) ||
+                            ((r > 0 && r < rowSize - 1) && (c == 0 || c == colSize - 1))) {
+                        newRow.add(new EmptyGP());
+                    }
+                    else if ((r > 0 && r < rowSize - 1) && (c > 0 && c < colSize - 1)) {
+                        newRow.add(gameBoard.get(r - 1).get(c - 1));
+                    }
+                }
+                newGrid.add(newRow);
+            }
+            this.setGrid(newGrid);
+        }
+        catch (Exception e) {
+            throw(e);
+        }
     }
 
+    @Override
+    public void setGrid(ArrayList<ArrayList<GamePiece>> grid) {
+        this.gameBoard = grid;
+    }
     @Override
     public Player getPlayer(boolean playerOne) {
         if (playerOne) {
@@ -221,4 +244,11 @@ public class TicTacToe implements TicTacToeModel {
             return this.p2;
         }
     }
+
+    @Override
+    public int getTurnNumber() {
+        return this.turnNumber;
+    }
+
+
 }

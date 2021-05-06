@@ -31,11 +31,6 @@ public interface TicTacToeModel {
      */
     void makeMove(Player player, int row, int column);
 
-    /**
-     * Increases the Grid Size each by 2 for number of rows and columns
-     */
-    void increaseGrid();
-
 
     /**
      * Swaps the Current Game Piece to another location
@@ -67,10 +62,16 @@ public interface TicTacToeModel {
     ArrayList<ArrayList<GamePiece>> getGrid();
 
     /**
-     * Sets our grid to whatever we assign it
-     * @param newGrid the grid we want to assign to
+     * Increases our grid size (if 3x3 -> 5x5 -> 7x7)
      */
-    void setGrid(ArrayList<ArrayList<GamePiece>> newGrid);
+    void increaseGrid();
+
+
+    /**
+     * Sets our grid
+     * @param grid The grid we want our gameboard to represent
+     */
+    void setGrid(ArrayList<ArrayList<GamePiece>> grid);
 
     /**
      * Gets the player we want
@@ -78,5 +79,12 @@ public interface TicTacToeModel {
      * @return our Player
      */
     Player getPlayer(boolean playerOne);
+
+    /**
+     *
+     * @return an Int that represents the number of turns passed in the game.
+     */
+    int getTurnNumber();
+
 
 }

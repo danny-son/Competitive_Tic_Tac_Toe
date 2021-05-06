@@ -437,4 +437,17 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             }
         }
     }
+
+
+    @Override
+    public void dynamicallyIncreaseGrid(View v) {
+        if (game.getTurnNumber() > 2) {
+            game.increaseGrid();
+        }
+        else {
+            Toast.makeText(this, "Need to have 2 turns completed to perform this",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

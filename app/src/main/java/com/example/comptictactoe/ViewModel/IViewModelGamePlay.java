@@ -125,6 +125,19 @@ public interface IViewModelGamePlay {
     void addTurnView(View v);
 
 
+    /**
+     * Increases the grid size, Performs many steps
+     *  1. increases our gameGrid (2D array of gamePieces)
+     *  2. alters our gameGrid previously to fit with the new one (keep pieces in the center)
+     *  3. recreates our buttonMap and buttonMapDuplicate, and creates the amount that represents
+     *      our gridSize
+     *  4. relocates our buttonMap and buttonMapDuplicate respectively,
+     *      change size if buttons overlap each other or overlaps screen
+     *  5. resets the number of turns to perform increase grid again
+     *
+     */
+    void dynamicallyIncreaseGrid(View v);
+
 
 
 }
