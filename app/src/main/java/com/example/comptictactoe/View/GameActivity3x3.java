@@ -50,7 +50,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Intent i = getIntent();
         String playerName1 =  (String) i.getStringExtra("PlayerOne");
         String playerName2 = (String) i.getStringExtra("PlayerTwo");
-        Player p1 = new Player(playerName1,new X(),3,true,true);
+        Player p1 = new Player(playerName1,new X(),3,true,false);
         Player p2 = new Player(playerName2,new O(),3,false,false);
         game = new TicTacToe(p1,p2,3,3);
         createButtonMap();
@@ -85,21 +85,23 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         enableOrDisableAllButtons(buttonMapDuplicate,false);
 
 
-        buttonMovesMap.put((Button) findViewById(R.id.swap), 3);
-        buttonMovesMap.put((Button) findViewById(R.id.endTurn),0);
-        buttonMovesMap.put((Button) findViewById(R.id.delete), 4);
-        buttonMovesMap.put((Button) findViewById(R.id.place),0);
+        buttonMovesMap.put((Button) findViewById(R.id.swap), 0);
+        buttonMovesMap.put((Button) findViewById(R.id.endTurn),1);
+        buttonMovesMap.put((Button) findViewById(R.id.delete), 2);
+        buttonMovesMap.put((Button) findViewById(R.id.place),3);
         enableOrDisableAllButtons(buttonMovesMap,true);
     }
 
     //OnClick when player selects to place a piece
     public void placePieceInit(View v) {
+
         TextView movePieceText = findViewById(R.id.movePieceText);
         text = "Place a piece";
         movePieceText.setText(text);
         movePieceText.setVisibility(View.VISIBLE);
         setButtonClickable(buttonMovesMap,false);
         setButtonClickable(buttonMap,true);
+
     }
 
     //OnClick method when player selects an area to place their piece
@@ -112,14 +114,16 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Player p2 = game.getPlayer(false);
         try {
 
-            if (p1.getCurrentTurn() && p1.getTurnMade()) {
+            if (p1.getCurrentTurn() && !p1.getTurnMade()) {
                 placePieceHelper(p1, rowIndex, colIndex);
+
             }
-            else if (p2.getCurrentTurn() && p2.getTurnMade()) {
+            else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
                 placePieceHelper(p2, rowIndex, colIndex);
+
             }
-            else if ((p1.getCurrentTurn() && !p1.getTurnMade()) ||
-                    p2.getCurrentTurn() && !p2.getTurnMade()) {
+            else if ((p1.getCurrentTurn() && p1.getTurnMade()) ||
+                    p2.getCurrentTurn() && p2.getTurnMade()) {
                 Toast.makeText(this,"Your Turn was Already Used! Either end " +
                                 "your turn or Spend Credits to buy an Extra Turn.",
                         Toast.LENGTH_SHORT).show();
@@ -135,7 +139,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void placePieceHelper(Player player, int row, int col) {
         game.makeMove(player,row,col);
         findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
-        player.setTurnMade(false);
+        player.setTurnMade(true);
         resetMovesButtons();
         findViewById(R.id.endTurn).setClickable(true);
         didPlayerWin(player);
@@ -152,6 +156,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             setButtonClickable(buttonMap,false);
             setButtonClickable(buttonMapDuplicate,false);
             setButtonClickable(buttonMovesMap, false);
+            findViewById(R.id.extraTurn).setClickable(false);
         }
     }
 
@@ -238,10 +243,11 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Player p2 = game.getPlayer(false);
         Button b = (Button)v;
         TextView t = findViewById(R.id.movePieceText);
-        if ((p1.getCurrentTurn() && !p1.getTurnMade()) || p2.getCurrentTurn() && !p2.getTurnMade()) {
+        if ((p1.getCurrentTurn() && p1.getTurnMade()) || p2.getCurrentTurn() && p2.getTurnMade()) {
             Toast.makeText(this,"Your Turn was Already Used! Either end " +
                             "your turn or Spend Credits to buy an Extra Turn.",
                     Toast.LENGTH_SHORT).show();
+            return;
         }
         else if (b == findViewById(R.id.delete)) {
             boolean playerOneDeleteValid = false;
@@ -315,11 +321,11 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
 
             //reset our two buttons we selected
-            if (p1.getCurrentTurn() && p1.getTurnMade()) {
-                p1.setTurnMade(false);
+            if (p1.getCurrentTurn() && !p1.getTurnMade()) {
+                p1.setTurnMade(true);
             }
-            else if (p2.getCurrentTurn() && p2.getTurnMade()) {
-                p2.setTurnMade(false);
+            else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
+                p2.setTurnMade(true);
             }
             Button click = findViewById(R.id.endTurn);
             click.setClickable(true);
@@ -356,11 +362,11 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             t.setVisibility(View.INVISIBLE);
 
             //check if game is over
-            if (p1.getCurrentTurn() && p1.getTurnMade()) {
-                p1.setTurnMade(false);
+            if (p1.getCurrentTurn() && !p1.getTurnMade()) {
+                p1.setTurnMade(true);
             }
-            else if (p2.getCurrentTurn() && p2.getTurnMade()) {
-                p2.setTurnMade(false);
+            else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
+                p2.setTurnMade(true);
             }
             resetMovesButtons();
             Button click = findViewById(R.id.endTurn);
@@ -395,12 +401,40 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         game.endTurn(p1,p2);
         changeTurnView();
         setButtonClickable(buttonMovesMap, true);
+        findViewById(R.id.extraTurn).setClickable(true);
+        findViewById(R.id.gameStatus).setVisibility(View.INVISIBLE);
     }
 
     //allows the player to gain an extra turn
-    public void gainExtraTurn(Player p) {
-        p.setTurnMade(false);
-        setButtonClickable(buttonMovesMap, true);
-
+    public void addTurnView(View v) {
+        String errMsg = "Player needs to perform an action before trying to gain an extra turn!";
+        Player p1 = game.getPlayer(true);
+        Player p2 = game.getPlayer(false);
+        if (p1.getCurrentTurn()){
+            if (p1.getTurnMade()) {
+                p1.setTurnMade(false);
+                setButtonClickable(buttonMovesMap, true);
+                findViewById(R.id.extraTurn).setClickable(false);
+                TextView t = findViewById(R.id.gameStatus);
+                t.setText("Player has gained an extra turn!");
+                t.setVisibility(View.VISIBLE);
+            }
+            else {
+                Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (p2.getCurrentTurn()) {
+            if (p2.getTurnMade()) {
+                p2.setTurnMade(false);
+                setButtonClickable(buttonMovesMap, true);
+                findViewById(R.id.extraTurn).setClickable(false);
+                TextView t = findViewById(R.id.gameStatus);
+                t.setText("Player has gained an extra turn!");
+                t.setVisibility(View.VISIBLE);
+            }
+            else {
+                Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

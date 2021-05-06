@@ -322,4 +322,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.773" />
 
+    <Button
+        android:id="@+id/extraTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addTurnView"
+        android:text="@string/extra_turn"
+        android:textAlignment="textStart"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.899"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

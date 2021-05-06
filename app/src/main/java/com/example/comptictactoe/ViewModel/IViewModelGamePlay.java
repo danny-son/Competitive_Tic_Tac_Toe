@@ -117,6 +117,13 @@ public interface IViewModelGamePlay {
     void editPieceInit(View v);
 
 
+    /**
+     * Allows the player to perform an extra move,
+     * Resets the buttons click status back to clickable except for extra turn.
+     * @param v View/Button we want to perform this action on
+     */
+    void addTurnView(View v);
+
 
 
 

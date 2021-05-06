@@ -147,11 +147,13 @@ public class TicTacToe implements TicTacToeModel {
     public void makeMove(Player p, int row, int column) {
         if (moveValid(row,column)) {
             gameBoard.get(row).set(column, p.getGP());
+            p.setTurnMade(true);
         }
         else {
             throw new IllegalArgumentException("Move needs to be on the board or not " +
                     "have a piece on where u placed the piece");
         }
+
     }
 
     /**
@@ -190,13 +192,13 @@ public class TicTacToe implements TicTacToeModel {
             p1.setCurrentTurn(false);
             p1.setTurnMade(false);
             p2.setCurrentTurn(true);
-            p2.setTurnMade(true);
+            p2.setTurnMade(false);
         }
         else if (p2.getCurrentTurn()) {
             p2.setCurrentTurn(false);
             p2.setTurnMade(false);
             p1.setCurrentTurn(true);
-            p1.setTurnMade(true);
+            p1.setTurnMade(false);
         }
     }
 
