@@ -2,8 +2,13 @@ package com.example.comptictactoe.Model;
 
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * Class to represent the TicTacToe Model
+ * Handles setting up, and running the game, and determines game status
+ */
 public class TicTacToe implements TicTacToeModel {
     private final Player p1;
     private final Player p2;
@@ -12,7 +17,13 @@ public class TicTacToe implements TicTacToeModel {
     private ArrayList<ArrayList<GamePiece>> gameBoard;
     private int turnNumber;
 
-    //different Size constructor;
+    /**
+     * Main Constructor
+     * @param p1 Player One
+     * @param p2 Player Two
+     * @param row int to represent the number of rows in our gameBoard
+     * @param col int to represent the number of columns in our gameBoard
+     */
     public TicTacToe(Player p1, Player p2, int row, int col) {
         this.p1 = p1;
         this.p2 = p2;
@@ -150,6 +161,7 @@ public class TicTacToe implements TicTacToeModel {
         if (moveValid(row,column)) {
             gameBoard.get(row).set(column, p.getGP());
             p.setTurnMade(true);
+            p.setPoints(p.getPoints() - p.getMoves().getPlace());
         }
         else {
             throw new IllegalArgumentException("Move needs to be on the board or not " +
@@ -172,15 +184,19 @@ public class TicTacToe implements TicTacToeModel {
 
 
     @Override
-    public void swapPieces(int rowBefore, int colBefore, int rowAfter, int colAfter) {
+    public void swapPieces(Player p, int rowBefore, int colBefore, int rowAfter, int colAfter) {
         GamePiece tempPieceBefore = gameBoard.get(rowBefore).get(colBefore);
         gameBoard.get(rowBefore).set(colBefore, gameBoard.get(rowAfter).get(colAfter));
         gameBoard.get(rowAfter).set(colAfter, tempPieceBefore);
+        p.setPoints(p.getPoints() - p.getMoves().getSwap());
+        p.getMoves().incrementSwap(2);
     }
 
     @Override
-    public void deletePiece(int row, int col) {
+    public void deletePiece(Player p, int row, int col) {
         gameBoard.get(row).set(col, new EmptyGP());
+        p.setPoints(p.getPoints() - p.getMoves().getDelete());
+        p.getMoves().incrementDelete(1);
     }
 
     @Override
@@ -250,5 +266,69 @@ public class TicTacToe implements TicTacToeModel {
         return this.turnNumber;
     }
 
+    @Override
+    public void gainExtraTurn(Player p) {
+        p.setTurnMade(false);
+        p.setPoints(p.getPoints() - p.getMoves().getExtraTurn());
+        p.getMoves().incrementExtraTurn(3);
+    }
 
+    /**
+     * @return 2D array that represents a copy of our gameBoard
+     */
+    private ArrayList<ArrayList<GamePiece>> createBoardCopy() {
+        ArrayList<ArrayList<GamePiece>> board = new ArrayList<ArrayList<GamePiece>>();
+        for (int i = 0; i < gameBoard.size(); i++) {
+            ArrayList<GamePiece> row = new ArrayList<GamePiece>();
+            for (int j = 0; j < gameBoard.get(i).size(); j++) {
+                row.add(gameBoard.get(i).get(j));
+            }
+            board.add(row);
+        }
+        return board;
+    }
+
+    @Override
+    public void accumulatePoints(Player p) {
+        int points = 0;
+        ArrayList<ArrayList<GamePiece>> board = createBoardCopy();
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.get(i).size(); j++) {
+                if (j == board.get(i).size() - 1 && i == board.size() -1) {
+                    continue;
+                }
+                else if (i == board.size() -1) {
+                    if (p.getGP().equals(board.get(i).get(j)) &&
+                            p.getGP().equals(board.get(i).get(j + 1))) {
+                        board.get(i).set(j, new EmptyGP());
+                        board.get(i).set(j + 1, new EmptyGP());
+                        points++;
+                    }
+                }
+                else if (j == board.get(i).size() - 1) {
+                    if (p.getGP().equals(board.get(i).get(j)) &&
+                            p.getGP().equals(board.get(i + 1).get(j))) {
+                        board.get(i).set(j, new EmptyGP());
+                        board.get(i+ 1).set(j, new EmptyGP());
+                        points++;
+                    }
+                }
+                else {
+                    if (p.getGP().equals(board.get(i).get(j)) &&
+                            p.getGP().equals(board.get(i).get(j + 1))) {
+                        board.get(i).set(j, new EmptyGP());
+                        board.get(i).set(j + 1, new EmptyGP());
+                        points++;
+                    }
+                    else if (p.getGP().equals(board.get(i).get(j)) &&
+                            p.getGP().equals(board.get(i + 1).get(j))) {
+                        board.get(i).set(j, new EmptyGP());
+                        board.get(i+ 1).set(j, new EmptyGP());
+                        points++;
+                    }
+                }
+            }
+        }
+        p.setPoints(p.getPoints() + points);
+    }
 }

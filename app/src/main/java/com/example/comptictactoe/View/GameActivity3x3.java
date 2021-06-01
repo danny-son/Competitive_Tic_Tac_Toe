@@ -20,6 +20,9 @@ import com.example.comptictactoe.R;
 import com.example.comptictactoe.Model.TicTacToe;
 import com.example.comptictactoe.Model.X;
 import com.example.comptictactoe.ViewModel.IViewModelGamePlay;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     Button buttonSwapOne;
     Button buttonSwapTwo;
     String text = "";
+    int turnRequirement = 3;
     //creates a map of our moves and sets the price for each variable
     HashMap<Button,Integer> buttonMovesMap = new HashMap<Button, Integer>();
 
@@ -53,11 +57,15 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Intent i = getIntent();
         String playerName1 =  (String) i.getStringExtra("PlayerOne");
         String playerName2 = (String) i.getStringExtra("PlayerTwo");
-        Player p1 = new Player(playerName1,new X(),3,true,false);
-        Player p2 = new Player(playerName2,new O(),3,false,false);
+        Player p1 = new Player(playerName1,new X(),2,true,false);
+        Player p2 = new Player(playerName2,new O(),2,false,false);
         game = new TicTacToe(p1,p2,3,3);
         ArrayList<Button> buttonList = createButtons(game.getGrid().size());
         createButtonMap(buttonList);
+        TextView playerOnePoints = findViewById(R.id.playerOnePoints);
+        TextView playerTwoPoints = findViewById(R.id.playerTwoPoints);
+        playerOnePoints.setText(p1.getName() + ": " + p1.getPoints());
+        playerTwoPoints.setText(p2.getName() + ": " + p2.getPoints());
         changeTurnView();
     }
 
@@ -90,7 +98,6 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        game.deletePiece(row,col);
         //update & edit our Buttons
         resetMovesButtons();
         findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
@@ -98,9 +105,21 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         //reset our two buttons we selected
         if (p1.getCurrentTurn() && !p1.getTurnMade()) {
             p1.setTurnMade(true);
+            game.deletePiece(p1,row,col);
+            Button delete = findViewById(R.id.delete);
+            delete.setText("DELETE: " + p1.getMoves().getDelete());
+            b.setText("");
+            TextView pointsText = findViewById(R.id.playerOnePoints);
+            pointsText.setText(p1.getName() + ": " + p1.getPoints());
         }
         else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
             p2.setTurnMade(true);
+            game.deletePiece(p2,row,col);
+            Button delete = findViewById(R.id.delete);
+            delete.setText("DELETE: " + p2.getMoves().getDelete());
+            b.setText("");
+            TextView pointsText = findViewById(R.id.playerTwoPoints);
+            pointsText.setText(p2.getName() + ": " + p2.getPoints());
         }
         Button click = findViewById(R.id.endTurn);
         click.setClickable(true);
@@ -125,9 +144,6 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             int colIndexBefore = indexBefore % game.getGrid().size();
             int rowIndexAfter = indexAfter / game.getGrid().size();
             int colIndexAfter = indexAfter % game.getGrid().size();
-            game.swapPieces(rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
-
-
             Player p1 = game.getPlayer(true);
             Player p2 = game.getPlayer(false);
 
@@ -136,10 +152,20 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
 
             //check if game is over
             if (p1.getCurrentTurn() && !p1.getTurnMade()) {
+                game.swapPieces(p1,rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
                 p1.setTurnMade(true);
+                Button swap = findViewById(R.id.swap);
+                swap.setText("SWAP: " + p1.getMoves().getSwap());
+                TextView pointsText = findViewById(R.id.playerOnePoints);
+                pointsText.setText(p1.getName() + ": " + p1.getPoints());
             }
             else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
+                game.swapPieces(p2, rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
                 p2.setTurnMade(true);
+                Button swap = findViewById(R.id.swap);
+                swap.setText("SWAP: " + p2.getMoves().getSwap());
+                TextView pointsText = findViewById(R.id.playerTwoPoints);
+                pointsText.setText(p2.getName() + ": " + p2.getPoints());
             }
             resetMovesButtons();
             Button click = findViewById(R.id.endTurn);
@@ -153,6 +179,12 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void deletePieceInit(View v) {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
+        if ((p1.getCurrentTurn() && p1.getPoints() < p1.getMoves().getDelete()) ||
+                (p2.getCurrentTurn() && p2.getPoints() < p2.getMoves().getDelete())) {
+            Toast.makeText(this, "Not enough points to delete a piece!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         TextView t = findViewById(R.id.movePieceText);
         boolean playerOneDeleteValid = false;
         boolean playerTwoDeleteValid = false;
@@ -179,6 +211,19 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         enableOrDisableAllButtons(buttonMap,true);
         setButtonClickable(buttonMovesMap, false);
         delete = true;
+    }
+
+    @Override
+    public void updateButtonMovesCost(Player p) {
+        Button swap = findViewById(R.id.swap);
+        Button delete = findViewById(R.id.delete);
+        Button place = findViewById(R.id.place);
+        Button extraTurn = findViewById(R.id.extraTurn);
+        swap.setText("SWAP: " + p.getMoves().getSwap());
+        delete.setText("DELETE: " + p.getMoves().getDelete());
+        place.setText("PlACE: " + p.getMoves().getPlace());
+        extraTurn.setText("EXTRA TURN: " + p.getMoves().getExtraTurn());
+
     }
 
     //creates our map of buttons
@@ -228,9 +273,11 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             if (p1.getCurrentTurn() && !p1.getTurnMade()) {
                 placePieceHelper(p1, rowIndex, colIndex);
 
+
             }
             else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
                 placePieceHelper(p2, rowIndex, colIndex);
+
 
             }
             else if ((p1.getCurrentTurn() && p1.getTurnMade()) ||
@@ -248,7 +295,17 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
 
     //helper for the player to swap between two pieces
     public void placePieceHelper(Player player, int row, int col) {
+        Player p1 = game.getPlayer(true);
+        Player p2 = game.getPlayer(false);
+        TextView pointsView = null;
         game.makeMove(player,row,col);
+        if (player.equals(p1)) {
+            pointsView = findViewById(R.id.playerOnePoints);
+        }
+        else if (player.equals(p2)){
+            pointsView = findViewById(R.id.playerTwoPoints);
+        }
+        pointsView.setText(player.getName() + ": " + player.getPoints());
         findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
         player.setTurnMade(true);
         resetMovesButtons();
@@ -267,6 +324,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             setButtonClickable(buttonMap,false);
             setButtonClickable(buttonMovesMap, false);
             findViewById(R.id.extraTurn).setClickable(false);
+            findViewById(R.id.increaseGrid).setClickable(false);
         }
     }
 
@@ -358,11 +416,17 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        else  {
+        else if ((p1.getCurrentTurn() && p1.getPoints() < p1.getMoves().getSwap()) ||
+                (p2.getCurrentTurn() && p2.getPoints() < p2.getMoves().getSwap())) {
+            Toast.makeText(this,"Not enough points to Swap!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
             text = "Select Piece To Move:";
             t.setText(text);
             t.setVisibility(View.VISIBLE);
             setButtonClickable(buttonMovesMap, false);
+            enableOrDisableAllButtons(buttonMap,true);
             swap = true;
         }
     }
@@ -388,11 +452,13 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             text = "It's " + p1.getName() + "'s Turn!";
             t.setText(text);
             //show player score and interface
+            updateButtonMovesCost(p1);
         }
         else if (p2.getCurrentTurn()) {
             text = "It's " + p2.getName() + "'s Turn!";
             t.setText(text);
             //show player score and interface
+            updateButtonMovesCost(p2);
         }
     }
 
@@ -400,6 +466,16 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void endTurnView(View v) {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
+        if (p1.getCurrentTurn()) {
+            game.accumulatePoints(p1);
+            TextView pointText = findViewById(R.id.playerOnePoints);
+            pointText.setText(p1.getName() + ": " + p1.getPoints());
+        }
+        else if (p2.getCurrentTurn()) {
+            game.accumulatePoints(p2);
+            TextView pointText = findViewById(R.id.playerTwoPoints);
+            pointText.setText(p2.getName() + ": " + p2.getPoints());
+        }
         game.endTurn(p1,p2);
         changeTurnView();
         setButtonClickable(buttonMovesMap, true);
@@ -423,11 +499,19 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     //allows the player to gain an extra turn
     public void addTurnView(View v) {
         String errMsg = "Player needs to perform an action before trying to gain an extra turn!";
+        String errMsgPoints  = "Not enough points to gain an extra turn!";
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
         if (p1.getCurrentTurn()){
-            if (p1.getTurnMade()) {
-                p1.setTurnMade(false);
+            if (p1.getPoints() < p1.getMoves().getExtraTurn()) {
+                Toast.makeText(this,errMsgPoints,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (p1.getTurnMade()) {
+                game.gainExtraTurn(p1);
+                TextView pointsView = findViewById(R.id.playerOnePoints);
+                pointsView.setText(p1.getName() + ": " + p1.getPoints());
                 setButtonClickable(buttonMovesMap, true);
                 findViewById(R.id.extraTurn).setClickable(false);
                 TextView t = findViewById(R.id.gameStatus);
@@ -440,8 +524,15 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             }
         }
         else if (p2.getCurrentTurn()) {
-            if (p2.getTurnMade()) {
-                p2.setTurnMade(false);
+            if (p2.getPoints() < p2.getMoves().getExtraTurn()) {
+                Toast.makeText(this,errMsgPoints,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (p2.getTurnMade()) {
+                game.gainExtraTurn(p2);
+                TextView pointsView = findViewById(R.id.playerTwoPoints);
+                pointsView.setText(p2.getName() + ": " + p2.getPoints());
                 setButtonClickable(buttonMovesMap, true);
                 findViewById(R.id.extraTurn).setClickable(false);
                 TextView t = findViewById(R.id.gameStatus);
@@ -458,11 +549,13 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
 
     @Override
     public void dynamicallyIncreaseGrid(View v) {
-        if (game.getTurnNumber() > 2 && game.getGrid().size() < 7) {
+        if (game.getTurnNumber() >= turnRequirement && game.getGrid().size() < 7) {
             game.increaseGrid();
+            turnRequirement += 5;
             ArrayList<Button> newGrid = createButtons(game.getGrid().size());
             removeButtonsFromActivity();
             createButtonMap(newGrid);
+            updateButtonsText(buttonMap);
         }
         else if (game.getGrid().size() == 7) {
             Toast.makeText(this, "Cannot increase grid size any further",
@@ -488,26 +581,26 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                 xGap = 320;
                 yGap = 190;
                 xPos = 95;
-                yPos = 525;
+                yPos = 490;
                 btWidth = 250;
-                btHeight = 105;
+                btHeight = 120;
                 break;
 
             case 5:
-                xGap = 300;
-                yGap = 190;
-                xPos = 95;
-                yPos = 400;
+                xGap = 200;
+                yGap = 150;
+                xPos = 75;
+                yPos = 390;
                 btWidth = 160;
                 btHeight = 100;
                 break;
 
             case 7:
-                xGap = 45;
-                yGap = 45;
-                xPos = 95;
+                xGap = 130;
+                yGap = 130;
+                xPos = 90;
                 yPos = 375;
-                btWidth = 130;
+                btWidth = 100;
                 btHeight = 100;
                 break;
             default:

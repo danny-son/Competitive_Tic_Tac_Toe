@@ -171,4 +171,10 @@ public interface IViewModelGamePlay {
      * @param v Button we want to perform this action on.
      */
     void deletePieceInit(View v);
+
+    /**
+     * Updates the moves to be set for the player with their respective points and cost
+     * @param p Player we wish to change the view for our button of moves for
+     */
+    void updateButtonMovesCost(Player p);
 }

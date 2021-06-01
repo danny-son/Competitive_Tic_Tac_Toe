@@ -13,6 +13,7 @@ public class Player implements Serializable {
     private int points;
     private boolean currentTurn;
     private boolean turnMade;
+    private Moves moves;
 
 
     /**
@@ -34,6 +35,7 @@ public class Player implements Serializable {
         this.points  = points;
         this.currentTurn = currentTurn;
         this.turnMade = turnMade;
+        this.moves = new Moves();
     }
 
     /**
@@ -117,5 +119,13 @@ public class Player implements Serializable {
      */
     public void setCurrentTurn(boolean currentTurn) {
         this.currentTurn = currentTurn;
+    }
+
+    /**
+     * Getter Method
+     * @return Moves for the player
+     */
+    public Moves getMoves() {
+        return this.moves;
     }
 }

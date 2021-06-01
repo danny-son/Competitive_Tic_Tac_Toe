@@ -39,14 +39,14 @@ public interface TicTacToeModel {
      * @param rowAfter row index after
      * @param colAfter column index after
      */
-    void swapPieces(int rowBefore, int colBefore, int rowAfter, int colAfter);
+    void swapPieces(Player p, int rowBefore, int colBefore, int rowAfter, int colAfter);
 
     /**
      * Deletes a GamePiece on the board, changes it to empty
      * @param row row index we want to delete
      * @param col column index we want to delete
      */
-    void deletePiece(int row, int col);
+    void deletePiece(Player p, int row, int col);
 
     /**
      * Ends the current player's turn, swaps turns
@@ -85,6 +85,22 @@ public interface TicTacToeModel {
      * @return an Int that represents the number of turns passed in the game.
      */
     int getTurnNumber();
+
+    /**
+     * Allows the player to gain an extra turn
+     * resets their turn use, handles cost and increment of extra turn
+     * @param p Player we want to perform this action on.
+     */
+    void gainExtraTurn(Player p);
+
+    /**
+     * Method to determine how many points the player can accumulate after their turn ends
+     * - done by counting every player's GamePiece that are adjacent to each other.
+     * @param p Player we are using its GamePiece and checking for possible points
+     * @param board a 2D array of GamePieces, representing our game board
+     * @return integer that represents every adjacent pair we find
+     */
+    void accumulatePoints(Player p);
 
 
 }
