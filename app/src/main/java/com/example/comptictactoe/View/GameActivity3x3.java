@@ -42,7 +42,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     Button buttonSwapOne;
     Button buttonSwapTwo;
     String text = "";
-    int turnRequirement = 3;
+    int turnRequirement = 4;
     //creates a map of our moves and sets the price for each variable
     HashMap<Button,Integer> buttonMovesMap = new HashMap<Button, Integer>();
 
@@ -67,6 +67,8 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         playerOnePoints.setText(p1.getName() + ": " + p1.getPoints());
         playerTwoPoints.setText(p2.getName() + ": " + p2.getPoints());
         changeTurnView();
+        TextView increaseButton =  findViewById(R.id.increaseGrid);
+        increaseButton.setText("Increase Grid: " + turnRequirement + " Turns");
     }
 
 
@@ -149,6 +151,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
 
             TextView t = findViewById(R.id.movePieceText);
             t.setVisibility(View.INVISIBLE);
+            Button endTurnButton = findViewById(R.id.endTurn);
 
             //check if game is over
             if (p1.getCurrentTurn() && !p1.getTurnMade()) {
@@ -158,6 +161,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                 swap.setText("SWAP: " + p1.getMoves().getSwap());
                 TextView pointsText = findViewById(R.id.playerOnePoints);
                 pointsText.setText(p1.getName() + ": " + p1.getPoints());
+                endTurnButton.setText("End Turn: + " + game.accumulatePoints(p1));
             }
             else if (p2.getCurrentTurn() && !p2.getTurnMade()) {
                 game.swapPieces(p2, rowIndexBefore, colIndexBefore, rowIndexAfter, colIndexAfter);
@@ -166,6 +170,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
                 swap.setText("SWAP: " + p2.getMoves().getSwap());
                 TextView pointsText = findViewById(R.id.playerTwoPoints);
                 pointsText.setText(p2.getName() + ": " + p2.getPoints());
+                endTurnButton.setText("End Turn: + " + game.accumulatePoints(p2));
             }
             resetMovesButtons();
             Button click = findViewById(R.id.endTurn);
@@ -298,6 +303,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
         TextView pointsView = null;
+        Button endTurnButton = findViewById(R.id.endTurn);
         game.makeMove(player,row,col);
         if (player.equals(p1)) {
             pointsView = findViewById(R.id.playerOnePoints);
@@ -305,6 +311,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         else if (player.equals(p2)){
             pointsView = findViewById(R.id.playerTwoPoints);
         }
+        endTurnButton.setText("End Turn: + " + game.accumulatePoints(player));
         pointsView.setText(player.getName() + ": " + player.getPoints());
         findViewById(R.id.movePieceText).setVisibility(View.INVISIBLE);
         player.setTurnMade(true);
@@ -447,18 +454,23 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void changeTurnView() {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
-        TextView t = findViewById(R.id.turnName);
+        TextView turnName = findViewById(R.id.turnName);
+        TextView turnNumber = findViewById(R.id.turnNumberText);
+        turnNumber.setText("Turn " + game.getTurnNumber());
+        Button endTurnButton = findViewById(R.id.endTurn);
         if (p1.getCurrentTurn()) {
             text = "It's " + p1.getName() + "'s Turn!";
-            t.setText(text);
+            turnName.setText(text);
             //show player score and interface
             updateButtonMovesCost(p1);
+            endTurnButton.setText("End Turn: + "  + game.accumulatePoints(p1));
         }
         else if (p2.getCurrentTurn()) {
             text = "It's " + p2.getName() + "'s Turn!";
-            t.setText(text);
+            turnName.setText(text);
             //show player score and interface
             updateButtonMovesCost(p2);
+            endTurnButton.setText("End Turn: + "  + game.accumulatePoints(p2));
         }
     }
 
@@ -467,12 +479,12 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
         if (p1.getCurrentTurn()) {
-            game.accumulatePoints(p1);
+            p1.setPoints(p1.getPoints() + game.accumulatePoints(p1));
             TextView pointText = findViewById(R.id.playerOnePoints);
             pointText.setText(p1.getName() + ": " + p1.getPoints());
         }
         else if (p2.getCurrentTurn()) {
-            game.accumulatePoints(p2);
+            p2.setPoints(p2.getPoints() + game.accumulatePoints(p2));
             TextView pointText = findViewById(R.id.playerTwoPoints);
             pointText.setText(p2.getName() + ": " + p2.getPoints());
         }
@@ -551,18 +563,22 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     public void dynamicallyIncreaseGrid(View v) {
         if (game.getTurnNumber() >= turnRequirement && game.getGrid().size() < 7) {
             game.increaseGrid();
-            turnRequirement += 5;
+            turnRequirement += 7;
             ArrayList<Button> newGrid = createButtons(game.getGrid().size());
+            Button increaseGrid = findViewById(R.id.increaseGrid);
+            increaseGrid.setText("Increase Grid: " + turnRequirement + " Turns");
             removeButtonsFromActivity();
             createButtonMap(newGrid);
             updateButtonsText(buttonMap);
-        }
-        else if (game.getGrid().size() == 7) {
-            Toast.makeText(this, "Cannot increase grid size any further",
-                    Toast.LENGTH_SHORT).show();
+            if (game.getGrid().size() == 7) {
+                Button increaseSizeButton = (Button) findViewById(R.id.increaseGrid);
+                increaseSizeButton.setVisibility(View.INVISIBLE);
+                increaseSizeButton.setClickable(false);
+            }
         }
         else {
-            Toast.makeText(this, "Need to have 2 turns completed to perform this",
+            Toast.makeText(this, "It has to be turn number " + turnRequirement + " in" +
+                            "order to increase the size again",
                     Toast.LENGTH_SHORT).show();
         }
     }

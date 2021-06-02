@@ -289,7 +289,7 @@ public class TicTacToe implements TicTacToeModel {
     }
 
     @Override
-    public void accumulatePoints(Player p) {
+    public int accumulatePoints(Player p) {
         int points = 0;
         ArrayList<ArrayList<GamePiece>> board = createBoardCopy();
         for (int i = 0; i < board.size(); i++) {
@@ -329,6 +329,6 @@ public class TicTacToe implements TicTacToeModel {
                 }
             }
         }
-        p.setPoints(p.getPoints() + points);
+        return points;
     }
 }

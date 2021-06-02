@@ -97,10 +97,9 @@ public interface TicTacToeModel {
      * Method to determine how many points the player can accumulate after their turn ends
      * - done by counting every player's GamePiece that are adjacent to each other.
      * @param p Player we are using its GamePiece and checking for possible points
-     * @param board a 2D array of GamePieces, representing our game board
      * @return integer that represents every adjacent pair we find
      */
-    void accumulatePoints(Player p);
+    int accumulatePoints(Player p);
 
 
 }
