@@ -32,7 +32,7 @@ import java.util.Random;
 /**
  * Activity to Represent our 3x3 grid
  */
-public class GameActivity3x3 extends AppCompatActivity implements IViewModelGamePlay {
+public class GameActivity3x3 extends AppCompatActivity {
 
     TicTacToe game;
     HashMap<Button,Integer> buttonMap = new HashMap<Button, Integer>();
@@ -57,6 +57,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         Intent i = getIntent();
         String playerName1 =  (String) i.getStringExtra("PlayerOne");
         String playerName2 = (String) i.getStringExtra("PlayerTwo");
+
         Player p1 = new Player(playerName1,new X(),2,true,false);
         Player p2 = new Player(playerName2,new O(),2,false,false);
         game = new TicTacToe(p1,p2,3,3);
@@ -72,7 +73,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     }
 
 
-    @Override
+
     public void selectMoves(View v) {
         if (place) {
             placePiece(v);
@@ -85,7 +86,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         }
     }
 
-    @Override
+
     public void deletePiece(View v) {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
@@ -128,7 +129,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     }
 
 
-    @Override
+
     public void swapPiece(View v) {
         if (buttonSwapOne == null) {
             buttonSwapOne = (Button)v;
@@ -180,7 +181,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         }
     }
 
-    @Override
+
     public void deletePieceInit(View v) {
         Player p1 = game.getPlayer(true);
         Player p2 = game.getPlayer(false);
@@ -218,7 +219,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         delete = true;
     }
 
-    @Override
+
     public void updateButtonMovesCost(Player p) {
         Button swap = findViewById(R.id.swap);
         Button delete = findViewById(R.id.delete);
@@ -247,7 +248,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
         }
     }
 
-    @Override
+
     public void removeButtonsFromActivity() {
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.mainLayout);
         for (Button b: buttonMap.keySet()) {
@@ -421,12 +422,10 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
             Toast.makeText(this,"Your Turn was Already Used! Either end " +
                             "your turn or Spend Credits to buy an Extra Turn.",
                     Toast.LENGTH_SHORT).show();
-            return;
         }
         else if ((p1.getCurrentTurn() && p1.getPoints() < p1.getMoves().getSwap()) ||
                 (p2.getCurrentTurn() && p2.getPoints() < p2.getMoves().getSwap())) {
             Toast.makeText(this,"Not enough points to Swap!", Toast.LENGTH_SHORT).show();
-            return;
         }
         else {
             text = "Select Piece To Move:";
@@ -559,7 +558,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     }
 
 
-    @Override
+
     public void dynamicallyIncreaseGrid(View v) {
         if (game.getTurnNumber() >= turnRequirement && game.getGrid().size() < 7) {
             game.increaseGrid();
@@ -584,7 +583,7 @@ public class GameActivity3x3 extends AppCompatActivity implements IViewModelGame
     }
 
 
-    @Override
+
     public ArrayList<Button> createButtons(int gridSize) {
         int xGap;
         int yGap;

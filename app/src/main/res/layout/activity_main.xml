@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".View.MainActivity">
 
+
     <TextView
         android:id="@+id/title"
         android:layout_width="360dp"
@@ -53,37 +54,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/enter1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="228dp"
-        android:onClick="inputText"
-        android:text="@string/enter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
-        app:layout_constraintStart_toEndOf="@+id/playerName1"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/enter2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="284dp"
-        android:onClick="inputText"
-        android:text="@string/enter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playerName2"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/playGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="148dp"
-        android:onClick="nextPage"
         android:text="@string/play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
