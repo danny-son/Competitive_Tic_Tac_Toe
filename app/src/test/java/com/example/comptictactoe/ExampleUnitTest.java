@@ -1,6 +1,8 @@
 package com.example.comptictactoe;
 
-import com.example.comptictactoe.Model.TicTacToe;
+import com.example.comptictactoe.Model.Player;
+import com.example.comptictactoe.Model.PlayerFactory;
+import com.example.comptictactoe.Model.X;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,17 +17,21 @@ import static org.junit.Assert.*;
  */
 @RunWith(JUnit4.class)
 public class ExampleUnitTest {
+
+
+    private Player playerOne;
+    private Player playerTwo;
+    private final PlayerFactory factory = new PlayerFactory();
+
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
 
 
-    @Test
-    public void testGridCreated() {
+    public void setUp() {
 
     }
-
 
 
 }
