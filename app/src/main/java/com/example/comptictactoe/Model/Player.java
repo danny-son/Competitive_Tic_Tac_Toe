@@ -13,7 +13,7 @@ public class Player implements Serializable {
     private int points;
     private boolean currentTurn;
     private boolean turnMade;
-    private Moves moves;
+    private MovesPoints movePoints;
 
 
     /**
@@ -35,8 +35,9 @@ public class Player implements Serializable {
         this.points  = points;
         this.currentTurn = currentTurn;
         this.turnMade = turnMade;
-        this.moves = new Moves();
+        this.movePoints = new MovesPoints();
     }
+
 
     /**
      * Gets the Player's Name
@@ -125,7 +126,7 @@ public class Player implements Serializable {
      * Getter Method
      * @return Moves for the player
      */
-    public Moves getMoves() {
-        return this.moves;
+    public MovesPoints getMoves() {
+        return this.movePoints;
     }
 }

@@ -1,10 +1,11 @@
 package com.example.comptictactoe.Model;
 
+
 /**
  * Class that handles information regarding the points needed for each move,
  * Collaborates with Player class.
  */
-public class Moves {
+public class MovesPoints {
     private final int place;
     private int swap;
     private int extraTurn;
@@ -13,7 +14,7 @@ public class Moves {
     /**
      * Main Constructor, initializes default cost for moves
      */
-    Moves() {
+    MovesPoints() {
         this.place = 0;
         this.swap = 3;
         this.extraTurn = 5;
@@ -67,5 +68,4 @@ public class Moves {
     public void incrementDelete(int num) {
         this.delete += num;
     }
-
 }

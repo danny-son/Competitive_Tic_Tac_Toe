@@ -1,50 +1,45 @@
 package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-
+import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.comptictactoe.Model.EmptyGP;
-import com.example.comptictactoe.Model.GamePiece;
-import com.example.comptictactoe.Model.O;
 import com.example.comptictactoe.Model.Player;
-import com.example.comptictactoe.R;
-import com.example.comptictactoe.Model.TicTacToe;
-import com.example.comptictactoe.Model.X;
-import com.example.comptictactoe.ViewModel.IViewModelGamePlay;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.comptictactoe.Model.PlayerFactory;
+import com.example.comptictactoe.ViewModel.GameplayViewModel;
+import com.example.comptictactoe.databinding.ActivityGame3x3Binding;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Activity to Represent our 3x3 grid
  */
 public class GameActivity3x3 extends AppCompatActivity {
 
-    TicTacToe game;
-    HashMap<Button,Integer> buttonMap = new HashMap<Button, Integer>();
-    boolean delete = false;
-    boolean swap = false;
-    boolean place = false;
-    Button buttonSwapOne;
-    Button buttonSwapTwo;
-    String text = "";
-    int turnRequirement = 4;
+
+    private GameplayViewModel gameViewModel;
+    private ActivityGame3x3Binding binding;
+    private final PlayerFactory playerFactory = new PlayerFactory();
+    private Player playerOne;
+    private Player playerTwo;
+    private Button buttonSwapOne;
+    private Button buttonSwapTwo;
+
+
+    /*
+    private HashMap<Button,Integer> buttonMap = new HashMap<Button, Integer>();
+    private boolean delete = false;
+    private boolean swap = false;
+    private boolean place = false;
+    private Button buttonSwapOne;
+    private Button buttonSwapTwo;
+    private String text = "";
+    private int turnRequirement = 4;
     //creates a map of our moves and sets the price for each variable
-    HashMap<Button,Integer> buttonMovesMap = new HashMap<Button, Integer>();
+    private HashMap<Button,Integer> buttonMovesMap = new HashMap<Button, Integer>();
+
+     */
 
 
 
@@ -53,14 +48,19 @@ public class GameActivity3x3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_3x3);
+        binding = ActivityGame3x3Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         Intent i = getIntent();
         String playerName1 =  (String) i.getStringExtra("PlayerOne");
         String playerName2 = (String) i.getStringExtra("PlayerTwo");
+        playerFactory.createPlayerOne(playerName1);
+        playerOne = playerFactory.createPlayerOne(playerName1);
+        playerTwo = playerFactory.createPlayerTwo(playerName2);
+        gameViewModel = new ViewModelProvider(this).get(GameplayViewModel.class);
+        gameViewModel.createGame(playerOne,playerTwo);
 
-        Player p1 = new Player(playerName1,new X(),2,true,false);
-        Player p2 = new Player(playerName2,new O(),2,false,false);
-        game = new TicTacToe(p1,p2,3,3);
+
+        /*
         ArrayList<Button> buttonList = createButtons(game.getGrid().size());
         createButtonMap(buttonList);
         TextView playerOnePoints = findViewById(R.id.playerOnePoints);
@@ -70,10 +70,13 @@ public class GameActivity3x3 extends AppCompatActivity {
         changeTurnView();
         TextView increaseButton =  findViewById(R.id.increaseGrid);
         increaseButton.setText("Increase Grid: " + turnRequirement + " Turns");
+
+         */
     }
 
 
 
+    /*
     public void selectMoves(View v) {
         if (place) {
             placePiece(v);
@@ -369,11 +372,15 @@ public class GameActivity3x3 extends AppCompatActivity {
         }
     }
 
+     */
+
     /*
     sets the clickables of buttons
     if false: sets all buttons that are non empty to clickable
     if true: sets all buttons that are empty to clickable
      */
+
+    /*
     public void setGamePieceClickable(HashMap<Button, Integer> map, boolean emptyPieces) {
         if (emptyPieces) {
             for (Button b: map.keySet()) {
@@ -495,10 +502,9 @@ public class GameActivity3x3 extends AppCompatActivity {
         resetMoveStatus();
     }
 
-    /**
-     * resets the current status of the moves that were clicked on and the buttons
-     * that associated with it
      */
+
+    /*
     private void resetMoveStatus() {
         swap = false;
         place = false;
@@ -656,4 +662,8 @@ public class GameActivity3x3 extends AppCompatActivity {
         }
         return list;
     }
+
+
+     */
+
 }

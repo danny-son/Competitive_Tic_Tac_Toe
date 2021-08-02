@@ -19,4 +19,6 @@ abstract class AbstractGamePiece implements GamePiece {
     public boolean isXGamePiece(){
         return false;
     }
+
+
 }
