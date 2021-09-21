@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".View.MainActivity">
 
-
     <TextView
         android:id="@+id/title"
         android:layout_width="360dp"
@@ -26,21 +25,21 @@
         tools:visibility="visible" />
 
     <EditText
-        android:id="@+id/playerName1"
+        android:id="@+id/player_one_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
         android:ems="10"
         android:hint="@string/enter_player_one_s_name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/playerName2"
+        app:layout_constraintBottom_toBottomOf="@+id/player_two_name_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toStartOf="parent"
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/playerName2"
+        android:id="@+id/player_two_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="284dp"
@@ -57,7 +56,7 @@
 
 
     <Button
-        android:id="@+id/playGame"
+        android:id="@+id/play_game_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="148dp"

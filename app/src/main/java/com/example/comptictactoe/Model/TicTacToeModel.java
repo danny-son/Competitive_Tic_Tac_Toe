@@ -50,16 +50,9 @@ public interface TicTacToeModel {
 
     /**
      * Ends the current player's turn, swaps turns
-     * @param p1 player one
-     * @param p2 player two
      */
-    void endTurn(Player p1, Player p2);
+    void endTurn();
 
-    /**
-     *
-     * @return a 2d Array of GamePieces
-     */
-    ArrayList<ArrayList<GamePiece>> getGrid();
 
     /**
      * Increases our grid size (if 3x3 -> 5x5 -> 7x7)
@@ -73,18 +66,6 @@ public interface TicTacToeModel {
      */
     void setGrid(ArrayList<ArrayList<GamePiece>> grid);
 
-    /**
-     * Gets the player we want
-     * @param playerOne boolean to determine if its player one or not
-     * @return our Player
-     */
-    Player getPlayer(boolean playerOne);
-
-    /**
-     *
-     * @return an Int that represents the number of turns passed in the game.
-     */
-    int getTurnNumber();
 
     /**
      * Allows the player to gain an extra turn

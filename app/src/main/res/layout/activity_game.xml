@@ -7,14 +7,13 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:foregroundTint="#FDFDFD"
-    tools:context=".View.GameActivity3x3">
+    tools:context=".View.GameActivity">
 
     <Button
-        android:id="@+id/endTurn"
+        android:id="@+id/end_turn_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#313BED"
-        android:onClick="endTurnView"
         android:text="@string/end_turn"
         android:textAlignment="center"
         android:textColor="#E8E4E4"
@@ -29,13 +28,12 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <TextView
-        android:id="@+id/gameStatus"
+        android:id="@+id/game_status_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="36dp"
-        android:text="@string/textview"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -48,23 +46,22 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <Button
-        android:id="@+id/swap"
+        android:id="@+id/swap_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="swapPieceInit"
         android:text="@string/swap"
         android:textAlignment="center"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/endTurn"
+        app:layout_constraintEnd_toStartOf="@+id/end_turn_button"
         app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92" />
 
     <TextView
-        android:id="@+id/movePieceText"
+        android:id="@+id/move_piece_instructions_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -80,10 +77,9 @@
         app:layout_constraintVertical_bias="0.060000002" />
 
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="deletePieceInit"
         android:text="@string/delete"
         android:textAlignment="center"
         android:textSize="10sp"
@@ -96,10 +92,9 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <Button
-        android:id="@+id/place"
+        android:id="@+id/place_piece_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="placePieceInit"
         android:text="@string/place"
         android:textAlignment="center"
         android:textSize="10sp"
@@ -112,13 +107,13 @@
         app:layout_constraintVertical_bias="0.819" />
 
     <TextView
-        android:id="@+id/turnName"
+        android:id="@+id/player_turn_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="@string/textview"
         android:textAlignment="center"
         android:textStyle="bold"
+        android:text="@string/player_turn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -127,10 +122,9 @@
         app:layout_constraintVertical_bias="0.01999998" />
 
     <Button
-        android:id="@+id/extraTurn"
+        android:id="@+id/extra_turn_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addTurnView"
         android:text="@string/extra_turn"
         android:textAlignment="center"
         android:textSize="10sp"
@@ -143,13 +137,12 @@
         app:layout_constraintVertical_bias="0.819" />
 
     <Button
-        android:id="@+id/increaseGrid"
+        android:id="@+id/increase_grid_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="dynamicallyIncreaseGrid"
-        android:text="Increase Size"
+        android:text="@string/increase_size"
         android:textAlignment="center"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +152,7 @@
         app:layout_constraintVertical_bias="0.732" />
 
     <TextView
-        android:id="@+id/playerOnePoints"
+        android:id="@+id/player_one_points_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -175,7 +168,7 @@
         app:layout_constraintVertical_bias="0.022" />
 
     <TextView
-        android:id="@+id/playerTwoPoints"
+        android:id="@+id/player_two_points_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -191,10 +184,10 @@
         app:layout_constraintVertical_bias="0.022" />
 
     <TextView
-        android:id="@+id/turnNumberText"
+        android:id="@+id/turn_number_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text=""
         android:textAlignment="center"
         android:textColor="#5818D1"
         android:textSize="20sp"

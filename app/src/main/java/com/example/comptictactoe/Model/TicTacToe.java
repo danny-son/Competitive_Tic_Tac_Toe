@@ -16,6 +16,8 @@ public class TicTacToe implements TicTacToeModel {
     private int colSize;
     private ArrayList<ArrayList<GamePiece>> gameBoard;
     private int turnNumber;
+    private GridSize gridSizeEnum;
+    private MovesEnabled movesEnabled;
 
     /**
      * Main Constructor
@@ -36,9 +38,30 @@ public class TicTacToe implements TicTacToeModel {
         }
         this.gameBoard = createGrid(this.rowSize, this.colSize);
         this.turnNumber = 0;
+        this.gridSizeEnum = GridSize.THREE_BY_THREE;
+        this.movesEnabled = new MovesEnabled();
     }
 
+    public void setGridSizeEnum() {
+        switch (gridSizeEnum) {
+            case THREE_BY_THREE:
+                this.gridSizeEnum = GridSize.FIVE_BY_FIVE;
+                break;
+            case FIVE_BY_FIVE:
+                this.gridSizeEnum = GridSize.SEVEN_BY_SEVEN;
+                break;
+            default: break;
+        }
 
+    }
+
+    public Enum<GridSize> getGridSizeEnum() {
+        return this.gridSizeEnum;
+    }
+
+    public MovesEnabled getMovesEnabled() {
+        return this.movesEnabled;
+    }
 
     @Override
     public ArrayList<ArrayList<GamePiece>> createGrid(int row, int column) {
@@ -200,7 +223,7 @@ public class TicTacToe implements TicTacToeModel {
     }
 
     @Override
-    public void endTurn(Player p1, Player p2) {
+    public void endTurn() {
         if (p1.getCurrentTurn()) {
             p1.setCurrentTurn(false);
             p1.setTurnMade(false);
@@ -216,7 +239,7 @@ public class TicTacToe implements TicTacToeModel {
         turnNumber++;
     }
 
-    @Override
+
     public ArrayList<ArrayList<GamePiece>> getGrid() {
         return this.gameBoard;
     }
@@ -251,17 +274,16 @@ public class TicTacToe implements TicTacToeModel {
     public void setGrid(ArrayList<ArrayList<GamePiece>> grid) {
         this.gameBoard = grid;
     }
-    @Override
-    public Player getPlayer(boolean playerOne) {
-        if (playerOne) {
-            return this.p1;
-        }
-        else {
-            return this.p2;
-        }
+
+    public Player getPlayerOne() {
+        return this.p1;
     }
 
-    @Override
+    public Player getPlayerTwo() {
+        return this.p2;
+    }
+
+
     public int getTurnNumber() {
         return this.turnNumber;
     }
@@ -277,15 +299,27 @@ public class TicTacToe implements TicTacToeModel {
      * @return 2D array that represents a copy of our gameBoard
      */
     private ArrayList<ArrayList<GamePiece>> createBoardCopy() {
-        ArrayList<ArrayList<GamePiece>> board = new ArrayList<ArrayList<GamePiece>>();
+        ArrayList<ArrayList<GamePiece>> board = new ArrayList<>(gameBoard);
         for (int i = 0; i < gameBoard.size(); i++) {
-            ArrayList<GamePiece> row = new ArrayList<GamePiece>();
+            ArrayList<GamePiece> row = new ArrayList<>(gameBoard.get(i));
             for (int j = 0; j < gameBoard.get(i).size(); j++) {
                 row.add(gameBoard.get(i).get(j));
             }
             board.add(row);
         }
         return board;
+    }
+
+    public int getTurnNumberToIncreaseGrid() {
+        if (this.gridSizeEnum == GridSize.THREE_BY_THREE) {
+            return 4;
+        }
+        else if (this.gridSizeEnum == GridSize.FIVE_BY_FIVE) {
+            return 9;
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
@@ -330,5 +364,15 @@ public class TicTacToe implements TicTacToeModel {
             }
         }
         return points;
+    }
+
+
+    public Character getPlayerPiece() {
+        if (p1.getCurrentTurn()) {
+            return 'X';
+        }
+        else {
+            return 'O';
+        }
     }
 }

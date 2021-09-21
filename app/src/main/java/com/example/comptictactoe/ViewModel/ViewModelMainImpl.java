@@ -1,8 +1,5 @@
 package com.example.comptictactoe.ViewModel;
 
-import android.content.Intent;
-import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -25,11 +22,20 @@ public class ViewModelMainImpl extends ViewModel implements IViewModelMain {
     public LiveData<String> getPlayerTwo() {
         return this.playerTwo;
     }
+
+    public void updatePlayerOne(String s) {
+        playerOne.setValue(s);
+    }
+
+    public void updatePlayerTwo(String s) {
+        playerTwo.setValue(s);
+    }
+
     @Override
-    public void navigateToGame(String s1, String s2) {
-        if (s1.length() == 0 || s2.length() == 0) {
-            throw new IllegalArgumentException();
+    public boolean playerNamesFilled() {
+        if (playerOne.getValue().length() == 0 || playerTwo.getValue().length() == 0) {
+            return false;
         }
-        return;
+        return true;
     }
 }

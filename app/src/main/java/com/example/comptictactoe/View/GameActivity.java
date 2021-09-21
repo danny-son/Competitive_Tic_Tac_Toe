@@ -1,45 +1,38 @@
 package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.widget.TextView;
 
+import com.example.comptictactoe.Model.Moves;
 import com.example.comptictactoe.Model.Player;
-import com.example.comptictactoe.Model.PlayerFactory;
+import com.example.comptictactoe.Model.TicTacToe;
+import com.example.comptictactoe.R;
 import com.example.comptictactoe.ViewModel.GameplayViewModel;
-import com.example.comptictactoe.databinding.ActivityGame3x3Binding;
+import com.example.comptictactoe.databinding.ActivityGameBinding;
 
 
 /**
  * Activity to Represent our 3x3 grid
  */
-public class GameActivity3x3 extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
 
     private GameplayViewModel gameViewModel;
-    private ActivityGame3x3Binding binding;
-    private final PlayerFactory playerFactory = new PlayerFactory();
-    private Player playerOne;
-    private Player playerTwo;
-    private Button buttonSwapOne;
-    private Button buttonSwapTwo;
+    private ActivityGameBinding binding;
 
 
     /*
     private HashMap<Button,Integer> buttonMap = new HashMap<Button, Integer>();
-    private boolean delete = false;
-    private boolean swap = false;
-    private boolean place = false;
-    private Button buttonSwapOne;
-    private Button buttonSwapTwo;
-    private String text = "";
-    private int turnRequirement = 4;
-    //creates a map of our moves and sets the price for each variable
     private HashMap<Button,Integer> buttonMovesMap = new HashMap<Button, Integer>();
 
      */
+
+
 
 
 
@@ -48,16 +41,116 @@ public class GameActivity3x3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityGame3x3Binding.inflate(getLayoutInflater());
+        binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        gameViewModel = new ViewModelProvider(this).get(GameplayViewModel.class);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setUpGame();
+        setUpText();
+        setUpMoves();
+    }
+
+    private void setUpMoves() {
+        binding.endTurnButton.setOnClickListener(v -> {
+            gameViewModel.endTurn();
+        });
+        binding.placePieceButton.setOnClickListener(v -> {
+            initializePlacePieceButton();
+        });
+    }
+
+    private void initializePlacePieceButton() {
+        binding.movePieceInstructionsText.setText(getString(R.string.placePieceText,
+                gameViewModel.retrievePlayerPiece()));
+        binding.movePieceInstructionsText.setVisibility(View.VISIBLE);
+        gameViewModel.setMove(Moves.PLACE, true);
+        /*
+        setButtonClickable(buttonMovesMap,false);
+        setButtonClickable(buttonMap,true);
+        place = true;
+
+         */
+
+    }
+
+    /**
+     * Sets up and adds observers to our textView
+     */
+    private void setUpText() {
+        TicTacToe game = gameViewModel.getGame().getValue();
+        binding.playerOnePointsText.setText(getString
+                (R.string.player_one_header,
+                        game.getPlayerOne().getName(),
+                        game.getPlayerOne().getPoints()));
+        binding.playerTwoPointsText.setText(getString
+                (R.string.player_two_header,
+                        game.getPlayerTwo().getName(),
+                        game.getPlayerTwo().getPoints()));
+        binding.turnNumberText.setText(getString(R.string.turn_number_text,
+                game.getTurnNumber()));
+    }
+
+    private void setUpGame() {
         Intent i = getIntent();
-        String playerName1 =  (String) i.getStringExtra("PlayerOne");
-        String playerName2 = (String) i.getStringExtra("PlayerTwo");
+        String playerName1 = i.getStringExtra("PlayerOne");
+        String playerName2 = i.getStringExtra("PlayerTwo");
+        gameViewModel.createGame(playerName1,playerName2);
+        gameViewModel.getGame().observe(this, new Observer<TicTacToe>() {
+            @Override
+            public void onChanged(TicTacToe ticTacToe) {
+                if (ticTacToe.getPlayerOne().getCurrentTurn()) {
+                    updateTextViews(ticTacToe.getPlayerOne());
+                    binding.playerOnePointsText.setText(getString
+                            (R.string.player_one_header,
+                                    ticTacToe.getPlayerOne().getName(),
+                                    ticTacToe.getPlayerOne().getPoints()));
+                }
+                else {
+                    binding.playerTwoPointsText.setText(getString
+                            (R.string.player_two_header,
+                                    ticTacToe.getPlayerTwo().getName(),
+                                    ticTacToe.getPlayerTwo().getPoints()));
+                    updateTextViews(ticTacToe.getPlayerTwo());
+                }
+                int turnsLeft = gameViewModel.turnsLeftToIncreaseSize();
+                binding.increaseGridButton.setText(getString(R.string.increase_size, turnsLeft));
+                updateGameGrid(ticTacToe);
+            }
+        });
+    }
+
+
+    private void updateGameGrid(TicTacToe ticTacToe) {
+
+
+    }
+
+    private void updateTextViews(Player player) {
+        binding.deleteButton.setText(getString(R.string.delete, player.getMoves().getDelete()));
+        binding.playerTurnNameText.setText(getString(R.string.player_turn_text, player.getName()));
+        binding.swapButton.setText(getString(R.string.swap, player.getMoves().getSwap()));
+        binding.extraTurnButton.setText(getString(R.string.extra_turn,player.getMoves().getExtraTurn()));
+        binding.endTurnButton.setText(getString(R.string.end_turn,
+                gameViewModel.pointsGained(player)));
+        binding.turnNumberText.setText(getString(R.string.turn_number_text,
+                gameViewModel.getGame().getValue().getTurnNumber()));
+    }
+
+    /*
+        Intent i = getIntent();
+        String playerName1 = i.getStringExtra("PlayerOne");
+        String playerName2 = i.getStringExtra("PlayerTwo");
         playerFactory.createPlayerOne(playerName1);
         playerOne = playerFactory.createPlayerOne(playerName1);
         playerTwo = playerFactory.createPlayerTwo(playerName2);
         gameViewModel = new ViewModelProvider(this).get(GameplayViewModel.class);
         gameViewModel.createGame(playerOne,playerTwo);
+
+         */
 
 
         /*
@@ -71,8 +164,10 @@ public class GameActivity3x3 extends AppCompatActivity {
         TextView increaseButton =  findViewById(R.id.increaseGrid);
         increaseButton.setText("Increase Grid: " + turnRequirement + " Turns");
 
-         */
+
     }
+
+         */
 
 
 
@@ -130,6 +225,8 @@ public class GameActivity3x3 extends AppCompatActivity {
         Button click = findViewById(R.id.endTurn);
         click.setClickable(true);
     }
+
+
 
 
 
@@ -590,78 +687,7 @@ public class GameActivity3x3 extends AppCompatActivity {
 
 
 
-    public ArrayList<Button> createButtons(int gridSize) {
-        int xGap;
-        int yGap;
-        int xPos;
-        int yPos;
-        int btWidth;
-        int btHeight;
-        switch (gridSize) {
-            case 3:
-                xGap = 320;
-                yGap = 190;
-                xPos = 95;
-                yPos = 490;
-                btWidth = 250;
-                btHeight = 120;
-                break;
 
-            case 5:
-                xGap = 200;
-                yGap = 150;
-                xPos = 75;
-                yPos = 390;
-                btWidth = 160;
-                btHeight = 100;
-                break;
-
-            case 7:
-                xGap = 130;
-                yGap = 130;
-                xPos = 90;
-                yPos = 375;
-                btWidth = 100;
-                btHeight = 100;
-                break;
-            default:
-                xGap = 0;
-                yGap = 0;
-                xPos = 100;
-                yPos = 100;
-                btWidth = 0;
-                btHeight = 0;
-                break;
-        }
-        ArrayList<Button> list = new ArrayList<Button>();
-        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.mainLayout);
-        for (int i = 0; i < gridSize * gridSize; i++) {
-            ConstraintSet set = new ConstraintSet();
-
-            Button bt = new Button(this);
-            // set view id, else getId() returns -1
-            bt.setId(View.generateViewId());
-            bt.setLayoutParams(new ConstraintLayout.LayoutParams(btWidth,btHeight));
-            bt.setBackgroundColor(Color.rgb(255,140,140));
-            bt.setX(((i%gridSize) * xGap) + xPos);
-            bt.setY(((i/gridSize) * yGap) + yPos);
-            bt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectMoves(v);
-                }
-            });
-            layout.addView(bt, 0);
-            set.clone(layout);
-            set.connect(bt.getId(), ConstraintSet.TOP, layout.getId(),
-                    ConstraintSet.TOP, 0);
-            set.connect(bt.getId(), ConstraintSet.LEFT, layout.getId(),
-                    ConstraintSet.LEFT, 0);
-            set.applyTo(layout);
-            list.add(bt);
-        }
-        return list;
-    }
 
 
      */
