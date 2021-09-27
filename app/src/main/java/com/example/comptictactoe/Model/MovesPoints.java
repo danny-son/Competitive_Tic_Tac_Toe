@@ -68,4 +68,17 @@ public class MovesPoints {
     public void incrementDelete(int num) {
         this.delete += num;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof  MovesPoints) {
+            MovesPoints object = (MovesPoints) obj;
+            return this.delete == object.getDelete() &&
+                    this.extraTurn == object.getExtraTurn() &&
+                    this.place == object.getPlace() &&
+                    this.swap == object.getSwap();
+        }
+        return false;
+    }
 }

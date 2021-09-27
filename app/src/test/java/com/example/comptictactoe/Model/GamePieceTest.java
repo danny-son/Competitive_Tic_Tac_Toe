@@ -42,9 +42,6 @@ public class GamePieceTest {
         assertFalse(mtPiece.isOGamePiece());
         assertFalse(mtPiece.isXGamePiece());
 
-
-
-
     }
 
 }

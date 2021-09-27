@@ -34,12 +34,10 @@ public interface TicTacToeModel {
 
     /**
      * Swaps the Current Game Piece to another location
-     * @param rowBefore row index before
-     * @param colBefore column index before
      * @param rowAfter row index after
      * @param colAfter column index after
      */
-    void swapPieces(Player p, int rowBefore, int colBefore, int rowAfter, int colAfter);
+    void swapPieces(Player p, int rowAfter, int colAfter);
 
     /**
      * Deletes a GamePiece on the board, changes it to empty

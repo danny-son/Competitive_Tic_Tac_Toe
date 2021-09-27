@@ -20,5 +20,12 @@
     <string name="increase_size">Increase Size: %d turns</string>
     <string name="player_turn_text">It\'s %s\'s turn!</string>
     <string name="turn_number_text">Turn: %d</string>
-    <string name="placePieceText">Place a Piece: %s</string>
+    <string name="place_piece_text">Place a Piece: %s</string>
+    <string name="delete_piece_text">Delete a Piece</string>
+    <string name="piece_deleted">Piece Deleted!</string>
+    <string name="piece_is_placed">Piece %s Placed!</string>
+    <string name="swap_piece_one">Select the First Piece to Swap</string>
+    <string name="swap_piece_two">Select the Second Piece to Swap</string>
+    <string name="swap_complete">Pieces Swapped!</string>
+    <string name="extra_turn_text">Gained an Extra Turn!</string>
 </resources>
