@@ -9,7 +9,6 @@ import com.example.comptictactoe.Model.Player;
 import com.example.comptictactoe.Model.PlayerFactory;
 import com.example.comptictactoe.Model.TicTacToe;
 
-import java.util.*;
 
 public class GameplayViewModel extends ViewModel  {
 
@@ -73,7 +72,8 @@ public class GameplayViewModel extends ViewModel  {
             case EXTRA_TURN:
                 getGame().getValue().getMovesEnabled().setExtraTurn(value);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -94,7 +94,8 @@ public class GameplayViewModel extends ViewModel  {
                 return player.getTurnMade() &&
                         player.getPoints() >= player.getMoves().getExtraTurn() &&
                         !game.getValue().getMovesEnabled().getExtraTurn();
-            default: return false;
+            default:
+                return false;
         }
     }
 
@@ -107,8 +108,7 @@ public class GameplayViewModel extends ViewModel  {
     public Player getCurrentPlayer() {
         if (game.getValue().getPlayerOne().getCurrentTurn()) {
             return game.getValue().getPlayerOne();
-        }
-        else {
+        } else {
             return game.getValue().getPlayerTwo();
         }
     }
@@ -153,4 +153,12 @@ public class GameplayViewModel extends ViewModel  {
                 game.getValue().getFirstSwapPieceColumn();
     }
 
+    public boolean isGameOver() {
+        return game.getValue().getGameOver();
+    }
+
+    public void updateGridSize() {
+        game.getValue().increaseGrid();
+        game.setValue(game.getValue());
+    }
 }

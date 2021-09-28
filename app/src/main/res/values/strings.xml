@@ -28,4 +28,5 @@
     <string name="swap_piece_two">Select the Second Piece to Swap</string>
     <string name="swap_complete">Pieces Swapped!</string>
     <string name="extra_turn_text">Gained an Extra Turn!</string>
+    <string name="game_over">%s Wins!</string>
 </resources>

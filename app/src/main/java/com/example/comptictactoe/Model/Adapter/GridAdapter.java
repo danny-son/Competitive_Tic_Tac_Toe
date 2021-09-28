@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.comptictactoe.Model.GridSize;
 import com.example.comptictactoe.R;
 
 public class GridAdapter extends BaseAdapter {
@@ -45,6 +46,7 @@ public class GridAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.grid_item, null);
         }
 
+        //TODO set image size based on current grid size and phone dimensions
         ImageView imageView = view.findViewById(R.id.grid_image);
         imageView.setImageResource(imageList[i]);
 
@@ -52,11 +54,10 @@ public class GridAdapter extends BaseAdapter {
     }
 
 
-
-
     /**
      * Updates an image in our adapter
-     * @param id the id that contains our drawable
+     *
+     * @param id       the id that contains our drawable
      * @param position index in our image list
      */
     public void updateImage(int id, int position) {
@@ -71,10 +72,29 @@ public class GridAdapter extends BaseAdapter {
 
     /**
      * updates the whole list of our images
+     *
      * @param imageList -> an array of image ids
      */
     public void updateImageList(int[] imageList) {
         this.imageList = imageList;
         this.notifyDataSetChanged();
+    }
+
+    public void updateGridSizeIncrease(GridSize newGridSize) {
+        int size = 0;
+        if (newGridSize == GridSize.FIVE_BY_FIVE) {
+            size = 5;
+        } else if (newGridSize == GridSize.SEVEN_BY_SEVEN) {
+            size = 7;
+        }
+        int[] newImageList = new int[size * size];
+        int prevIndex = 0;
+        for (int row = 1; row < size - 1; row++) {
+            for (int col = 1; col < size - 1; col++) {
+                newImageList[(row * size) + col] = imageList[prevIndex];
+                prevIndex++;
+            }
+        }
+        updateImageList(newImageList);
     }
 }
