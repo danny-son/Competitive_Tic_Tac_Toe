@@ -267,35 +267,32 @@ public class GameActivity extends AppCompatActivity {
         String playerName1 = i.getStringExtra("PlayerOne");
         String playerName2 = i.getStringExtra("PlayerTwo");
         gameViewModel.createGame(playerName1, playerName2);
-        gameViewModel.getGame().observe(this, new Observer<TicTacToe>() {
-            @Override
-            public void onChanged(TicTacToe ticTacToe) {
-                if (ticTacToe.getPlayerOne().getCurrentTurn()) {
-                    updateTextViews(ticTacToe.getPlayerOne());
-                } else {
-                    updateTextViews(ticTacToe.getPlayerTwo());
-                }
-                int turnsLeft = gameViewModel.turnsLeftToIncreaseSize();
-                binding.playerOnePointsText.setText(getString
-                        (R.string.player_one_header,
-                                ticTacToe.getPlayerOne().getName(),
-                                ticTacToe.getPlayerOne().getPoints()));
-                binding.playerTwoPointsText.setText(getString
-                        (R.string.player_two_header,
-                                ticTacToe.getPlayerTwo().getName(),
-                                ticTacToe.getPlayerTwo().getPoints()));
-                binding.increaseGridButton.setText(getString(R.string.increase_size, turnsLeft));
-                if (ticTacToe.isGameOver(ticTacToe.getPlayerOne())) {
-                    binding.gameStatusText.setText(getString(R.string.game_over, ticTacToe.getPlayerOne().getName()));
-                    binding.gameStatusText.setVisibility(View.VISIBLE);
-                    binding.movePieceInstructionsText.setVisibility(View.INVISIBLE);
-                    disableMoves();
-                } else if (ticTacToe.isGameOver(ticTacToe.getPlayerTwo())) {
-                    binding.gameStatusText.setText(getString(R.string.game_over, ticTacToe.getPlayerTwo().getName()));
-                    binding.gameStatusText.setVisibility(View.VISIBLE);
-                    binding.movePieceInstructionsText.setVisibility(View.INVISIBLE);
-                    disableMoves();
-                }
+        gameViewModel.getGame().observe(this, ticTacToe -> {
+            if (ticTacToe.getPlayerOne().getCurrentTurn()) {
+                updateTextViews(ticTacToe.getPlayerOne());
+            } else {
+                updateTextViews(ticTacToe.getPlayerTwo());
+            }
+            int turnsLeft = gameViewModel.turnsLeftToIncreaseSize();
+            binding.playerOnePointsText.setText(getString
+                    (R.string.player_one_header,
+                            ticTacToe.getPlayerOne().getName(),
+                            ticTacToe.getPlayerOne().getPoints()));
+            binding.playerTwoPointsText.setText(getString
+                    (R.string.player_two_header,
+                            ticTacToe.getPlayerTwo().getName(),
+                            ticTacToe.getPlayerTwo().getPoints()));
+            binding.increaseGridButton.setText(getString(R.string.increase_size, turnsLeft));
+            if (ticTacToe.isGameOver(ticTacToe.getPlayerOne())) {
+                binding.gameStatusText.setText(getString(R.string.game_over, ticTacToe.getPlayerOne().getName()));
+                binding.gameStatusText.setVisibility(View.VISIBLE);
+                binding.movePieceInstructionsText.setVisibility(View.INVISIBLE);
+                disableMoves();
+            } else if (ticTacToe.isGameOver(ticTacToe.getPlayerTwo())) {
+                binding.gameStatusText.setText(getString(R.string.game_over, ticTacToe.getPlayerTwo().getName()));
+                binding.gameStatusText.setVisibility(View.VISIBLE);
+                binding.movePieceInstructionsText.setVisibility(View.INVISIBLE);
+                disableMoves();
             }
         });
     }
