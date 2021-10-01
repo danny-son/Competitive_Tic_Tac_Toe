@@ -1,8 +1,5 @@
 package com.example.comptictactoe.Model;
 
-
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,13 +11,20 @@ public class TicTacToe implements TicTacToeModel {
     private final Player p2;
     private int rowSize;
     private int colSize;
+    private int firstSwapPieceRow;
+    private int firstSwapPieceColumn;
+    private boolean firstSwapPicked;
+    private boolean gameOver;
     private ArrayList<ArrayList<GamePiece>> gameBoard;
     private int turnNumber;
+    private GridSize gridSizeEnum;
+    private MovesEnabled movesEnabled;
 
     /**
      * Main Constructor
-     * @param p1 Player One
-     * @param p2 Player Two
+     *
+     * @param p1  Player One
+     * @param p2  Player Two
      * @param row int to represent the number of rows in our gameBoard
      * @param col int to represent the number of columns in our gameBoard
      */
@@ -29,16 +33,39 @@ public class TicTacToe implements TicTacToeModel {
         this.p2 = p2;
         if (row < 3 || col < 3) {
             throw new IllegalArgumentException("row and col should be size at least 3");
-        }
-        else {
+        } else {
             this.rowSize = row;
             this.colSize = col;
         }
         this.gameBoard = createGrid(this.rowSize, this.colSize);
         this.turnNumber = 0;
+        this.gridSizeEnum = GridSize.THREE_BY_THREE;
+        this.movesEnabled = new MovesEnabled();
+        this.firstSwapPicked = false;
+        this.gameOver = false;
     }
 
+    public void setGridSizeEnum() {
+        switch (gridSizeEnum) {
+            case THREE_BY_THREE:
+                this.gridSizeEnum = GridSize.FIVE_BY_FIVE;
+                break;
+            case FIVE_BY_FIVE:
+                this.gridSizeEnum = GridSize.SEVEN_BY_SEVEN;
+                break;
+            default:
+                break;
+        }
 
+    }
+
+    public GridSize getGridSizeEnum() {
+        return this.gridSizeEnum;
+    }
+
+    public MovesEnabled getMovesEnabled() {
+        return this.movesEnabled;
+    }
 
     @Override
     public ArrayList<ArrayList<GamePiece>> createGrid(int row, int column) {
@@ -60,38 +87,42 @@ public class TicTacToe implements TicTacToeModel {
         //first check for all the rows if the player contains all of its Pieces in a single row
         for (int r = 0; r < rowSize; r++) {
             if (checkRow(gameBoard, p.getGP(), r)) {
-                return true;
+                gameOver = true;
+                break;
             }
         }
         //check for all the columns if the players contains all of its Pieces in a single column
         for (int c = 0; c < colSize; c++) {
-            if (checkColumn(gameBoard, p.getGP(),c)) {
-                return true;
+            if (checkColumn(gameBoard, p.getGP(), c)) {
+                gameOver = true;
+                break;
             }
         }
 
         //check for both diagonals if the players contains all of it Pieces in diagonal form
         for (int i = 0; i < 2; i++) {
-           if (i == 0) {
-               if (checkDiagonal(gameBoard, p.getGP(), 0)) {
-                   return true;
-               }
-           }
-           else  {
-               if (checkDiagonal(gameBoard, p.getGP(), rowSize -1)) {
-                   return true;
-               }
-           }
+            if (i == 0) {
+                if (checkDiagonal(gameBoard, p.getGP(), 0)) {
+                    gameOver = true;
+                    break;
+                }
+            } else {
+                if (checkDiagonal(gameBoard, p.getGP(), rowSize - 1)) {
+                    gameOver = true;
+                    break;
+                }
+            }
         }
-        return false;
+        return gameOver;
     }
 
     /**
      * Helper Method to Determine if the Player has won, by having the same GamePiece in the given
      * row
+     *
      * @param gameBoard 2D list of GamePieces we are checking
-     * @param gp GamePiece we want to check for consistency
-     * @param row index number we are checking
+     * @param gp        GamePiece we want to check for consistency
+     * @param row       index number we are checking
      * @return boolean to see if all the GamePieces are in the same row.
      */
     private boolean checkRow(ArrayList<ArrayList<GamePiece>> gameBoard, GamePiece gp, int row) {
@@ -109,9 +140,10 @@ public class TicTacToe implements TicTacToeModel {
     /**
      * Helper Method to Determine if the Player has won, by having the same GamePiece in the given
      * column
+     *
      * @param gameBoard 2D list of GamePieces we are checking
-     * @param gp GamePiece we want to check for consistency
-     * @param col index number we are checking
+     * @param gp        GamePiece we want to check for consistency
+     * @param col       index number we are checking
      * @return boolean to see if all the GamePieces are in the same column.
      */
     private boolean checkColumn(ArrayList<ArrayList<GamePiece>> gameBoard, GamePiece gp, int col) {
@@ -129,9 +161,10 @@ public class TicTacToe implements TicTacToeModel {
     /**
      * Helper Method to Determine if the Player has won, by having the same GamePiece in the given
      * diagonal direction
+     *
      * @param gameBoard 2D list of GamePieces we are checking
-     * @param gp GamePiece we want to check for consistency
-     * @param row index number we are checking (0 = topLeft - bottomRight, 1 = bottomLeft to topRight)
+     * @param gp        GamePiece we want to check for consistency
+     * @param row       index number we are checking (0 = topLeft - bottomRight, 1 = bottomLeft to topRight)
      * @return boolean to see if all the GamePieces are in the same diagonal direction.
      */
     private boolean checkDiagonal(ArrayList<ArrayList<GamePiece>> gameBoard, GamePiece gp, int row) {
@@ -139,13 +172,12 @@ public class TicTacToe implements TicTacToeModel {
 
         if (row == 0) {
             for (int r = row; r < rowSize; r++) {
-                if (!gp.equals(gameBoard.get(r).get(r))){
+                if (!gp.equals(gameBoard.get(r).get(r))) {
                     isConnected = false;
                     break;
                 }
             }
-        }
-        else if (row == rowSize -1) {
+        } else if (row == rowSize - 1) {
             for (int r = row; r >= 0; r--) {
                 if (!gp.equals(gameBoard.get(r).get(row - r))) {
                     isConnected = false;
@@ -158,21 +190,21 @@ public class TicTacToe implements TicTacToeModel {
 
     @Override
     public void makeMove(Player p, int row, int column) {
-        if (moveValid(row,column)) {
+        if (moveValid(row, column)) {
             gameBoard.get(row).set(column, p.getGP());
             p.setTurnMade(true);
             p.setPoints(p.getPoints() - p.getMoves().getPlace());
-        }
-        else {
+            p.setNumPiecesInGrid(p.getNumPiecesInGrid() + 1);
+        } else {
             throw new IllegalArgumentException("Move needs to be on the board or not " +
                     "have a piece on where u placed the piece");
         }
-
     }
 
     /**
      * Helper Function to determine if the Move is valid for the player
-     * @param row row index they intend to use
+     *
+     * @param row    row index they intend to use
      * @param column column index they intend  to use
      * @return boolean to determine if the move is valid.
      */
@@ -182,48 +214,65 @@ public class TicTacToe implements TicTacToeModel {
     }
 
 
-
     @Override
-    public void swapPieces(Player p, int rowBefore, int colBefore, int rowAfter, int colAfter) {
-        GamePiece tempPieceBefore = gameBoard.get(rowBefore).get(colBefore);
-        gameBoard.get(rowBefore).set(colBefore, gameBoard.get(rowAfter).get(colAfter));
+    public void swapPieces(Player p, int rowAfter, int colAfter) {
+        GamePiece tempPieceBefore = gameBoard.get(firstSwapPieceRow).get(firstSwapPieceColumn);
+        if (firstSwapPieceRow == rowAfter && firstSwapPieceColumn == colAfter) {
+            throw new IllegalArgumentException("Need to select two different locations to Swap!");
+        }
+        gameBoard.get(firstSwapPieceRow).set(firstSwapPieceColumn, gameBoard.get(rowAfter).get(colAfter));
         gameBoard.get(rowAfter).set(colAfter, tempPieceBefore);
+        p.setTurnMade(true);
         p.setPoints(p.getPoints() - p.getMoves().getSwap());
         p.getMoves().incrementSwap(2);
+
+        //reset the swap mechanic after using it
+        this.firstSwapPicked = false;
     }
 
     @Override
     public void deletePiece(Player p, int row, int col) {
+        GamePiece gp = gameBoard.get(row).get(col);
+        if (gp.isEmptyGamePiece() || p.getGP().equals(gp)) {
+            throw new IllegalArgumentException("Cannot Delete an Empty Piece or Your Own!");
+        }
         gameBoard.get(row).set(col, new EmptyGP());
         p.setPoints(p.getPoints() - p.getMoves().getDelete());
+        p.setTurnMade(true);
         p.getMoves().incrementDelete(1);
+        if (p1.getCurrentTurn()) {
+            p2.setNumPiecesInGrid(p2.getNumPiecesInGrid() - 1);
+        } else if (p2.getCurrentTurn()) {
+            p1.setNumPiecesInGrid(p1.getNumPiecesInGrid() - 1);
+        }
     }
 
     @Override
-    public void endTurn(Player p1, Player p2) {
+    public void endTurn() {
         if (p1.getCurrentTurn()) {
             p1.setCurrentTurn(false);
             p1.setTurnMade(false);
             p2.setCurrentTurn(true);
             p2.setTurnMade(false);
-        }
-        else if (p2.getCurrentTurn()) {
+            p1.setPoints(p1.getPointsGained() + p1.getPoints());
+        } else if (p2.getCurrentTurn()) {
             p2.setCurrentTurn(false);
             p2.setTurnMade(false);
             p1.setCurrentTurn(true);
             p1.setTurnMade(false);
+            p2.setPoints(p2.getPointsGained() + p2.getPoints());
         }
         turnNumber++;
     }
 
-    @Override
+
     public ArrayList<ArrayList<GamePiece>> getGrid() {
         return this.gameBoard;
     }
 
     @Override
     public void increaseGrid() {
-        try{
+        try {
             this.rowSize = rowSize + 2;
             this.colSize = colSize + 2;
             ArrayList<ArrayList<GamePiece>> newGrid = new ArrayList<ArrayList<GamePiece>>();
@@ -233,17 +282,16 @@ public class TicTacToe implements TicTacToeModel {
                     if ((r == 0 || r == rowSize - 1) ||
                             ((r > 0 && r < rowSize - 1) && (c == 0 || c == colSize - 1))) {
                         newRow.add(new EmptyGP());
-                    }
-                    else if ((r > 0 && r < rowSize - 1) && (c > 0 && c < colSize - 1)) {
+                    } else if ((r > 0 && r < rowSize - 1) && (c > 0 && c < colSize - 1)) {
                         newRow.add(gameBoard.get(r - 1).get(c - 1));
                     }
                 }
                 newGrid.add(newRow);
             }
             this.setGrid(newGrid);
-        }
-        catch (Exception e) {
-            throw(e);
+            this.setGridSizeEnum();
+        } catch (Exception e) {
+            throw (e);
         }
     }
 
@@ -251,17 +299,16 @@ public class TicTacToe implements TicTacToeModel {
     public void setGrid(ArrayList<ArrayList<GamePiece>> grid) {
         this.gameBoard = grid;
     }
-    @Override
-    public Player getPlayer(boolean playerOne) {
-        if (playerOne) {
-            return this.p1;
-        }
-        else {
-            return this.p2;
-        }
+
+    public Player getPlayerOne() {
+        return this.p1;
     }
 
-    @Override
+    public Player getPlayerTwo() {
+        return this.p2;
+    }
+
+
     public int getTurnNumber() {
         return this.turnNumber;
     }
@@ -271,15 +318,17 @@ public class TicTacToe implements TicTacToeModel {
         p.setTurnMade(false);
         p.setPoints(p.getPoints() - p.getMoves().getExtraTurn());
         p.getMoves().incrementExtraTurn(3);
+        movesEnabled.resetMove();
+        movesEnabled.setExtraTurn(true);
     }
 
     /**
      * @return 2D array that represents a copy of our gameBoard
      */
     private ArrayList<ArrayList<GamePiece>> createBoardCopy() {
-        ArrayList<ArrayList<GamePiece>> board = new ArrayList<ArrayList<GamePiece>>();
+        ArrayList<ArrayList<GamePiece>> board = new ArrayList<>();
         for (int i = 0; i < gameBoard.size(); i++) {
-            ArrayList<GamePiece> row = new ArrayList<GamePiece>();
+            ArrayList<GamePiece> row = new ArrayList<>();
             for (int j = 0; j < gameBoard.get(i).size(); j++) {
                 row.add(gameBoard.get(i).get(j));
             }
@@ -288,47 +337,101 @@ public class TicTacToe implements TicTacToeModel {
         return board;
     }
 
+    public int getTurnNumberToIncreaseGrid() {
+        if (this.gridSizeEnum == GridSize.THREE_BY_THREE) {
+            return 4;
+        } else if (this.gridSizeEnum == GridSize.FIVE_BY_FIVE) {
+            return 12;
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     public int accumulatePoints(Player p) {
         int points = 0;
         ArrayList<ArrayList<GamePiece>> board = createBoardCopy();
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.get(i).size(); j++) {
-                if (j == board.get(i).size() - 1 && i == board.size() -1) {
+                if (j == board.get(i).size() - 1 && i == board.size() - 1) {
                     continue;
-                }
-                else if (i == board.size() -1) {
+                } else if (i == board.size() - 1) {
                     if (p.getGP().equals(board.get(i).get(j)) &&
                             p.getGP().equals(board.get(i).get(j + 1))) {
                         board.get(i).set(j, new EmptyGP());
                         board.get(i).set(j + 1, new EmptyGP());
                         points++;
                     }
-                }
-                else if (j == board.get(i).size() - 1) {
+                } else if (j == board.get(i).size() - 1) {
                     if (p.getGP().equals(board.get(i).get(j)) &&
                             p.getGP().equals(board.get(i + 1).get(j))) {
                         board.get(i).set(j, new EmptyGP());
-                        board.get(i+ 1).set(j, new EmptyGP());
+                        board.get(i + 1).set(j, new EmptyGP());
                         points++;
                     }
-                }
-                else {
+                } else {
                     if (p.getGP().equals(board.get(i).get(j)) &&
                             p.getGP().equals(board.get(i).get(j + 1))) {
                         board.get(i).set(j, new EmptyGP());
                         board.get(i).set(j + 1, new EmptyGP());
                         points++;
-                    }
-                    else if (p.getGP().equals(board.get(i).get(j)) &&
+                    } else if (p.getGP().equals(board.get(i).get(j)) &&
                             p.getGP().equals(board.get(i + 1).get(j))) {
                         board.get(i).set(j, new EmptyGP());
-                        board.get(i+ 1).set(j, new EmptyGP());
+                        board.get(i + 1).set(j, new EmptyGP());
                         points++;
                     }
                 }
             }
         }
         return points;
+    }
+
+    public boolean canDeletePlayerPiece() {
+        if (p1.getCurrentTurn() && p2.getNumPiecesInGrid() > 0) {
+            return true;
+        } else if (p2.getCurrentTurn() && p1.getNumPiecesInGrid() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public boolean getFirstSwapPicked() {
+        return this.firstSwapPicked;
+    }
+
+    public void setFirstSwapPicked(boolean enabled) {
+        this.firstSwapPicked = enabled;
+    }
+
+    public void setFirstSwapPieceRow(int row) {
+        this.firstSwapPieceRow = row;
+    }
+
+    public void setFirstSwapPieceColumn(int column) {
+        this.firstSwapPieceColumn = column;
+    }
+
+    public int getFirstSwapPieceRow() {
+        return this.firstSwapPieceRow;
+    }
+
+    public int getFirstSwapPieceColumn() {
+        return this.firstSwapPieceColumn;
+    }
+
+    public boolean getGameOver() {
+        return this.gameOver;
+    }
+
+
+    public Character getPlayerPiece() {
+        if (p1.getCurrentTurn()) {
+            return 'X';
+        } else {
+            return 'O';
+        }
     }
 }

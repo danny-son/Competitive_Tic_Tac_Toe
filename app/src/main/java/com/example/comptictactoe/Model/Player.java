@@ -2,6 +2,8 @@ package com.example.comptictactoe.Model;
 
 
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -10,10 +12,12 @@ import java.io.Serializable;
 public class Player implements Serializable {
     private String name;
     private GamePiece gp;
+    private int numPiecesInGrid;
     private int points;
+    private int pointsGained;
     private boolean currentTurn;
     private boolean turnMade;
-    private Moves moves;
+    private MovesPoints movePoints;
 
 
     /**
@@ -35,8 +39,11 @@ public class Player implements Serializable {
         this.points  = points;
         this.currentTurn = currentTurn;
         this.turnMade = turnMade;
-        this.moves = new Moves();
+        this.movePoints = new MovesPoints();
+        this.pointsGained = 0;
+        this.numPiecesInGrid = 0;
     }
+
 
     /**
      * Gets the Player's Name
@@ -125,7 +132,40 @@ public class Player implements Serializable {
      * Getter Method
      * @return Moves for the player
      */
-    public Moves getMoves() {
-        return this.moves;
+    public MovesPoints getMoves() {
+        return this.movePoints;
+    }
+
+
+    public void setPointsGained(int pointsGained) {
+        this.pointsGained = pointsGained;
+    }
+
+    public int getPointsGained() {
+        return this.pointsGained;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Player) {
+            Player object = (Player) obj;
+            return this.currentTurn == object.getCurrentTurn() &&
+                    this.turnMade == object.getTurnMade() &&
+                    this.gp.equals(object.getGP()) &&
+                    this.name.equals(object.getName()) &&
+                    this.points == object.getPoints() &&
+                    this.movePoints.equals(object.getMoves());
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int getNumPiecesInGrid() {
+        return this.numPiecesInGrid;
+    }
+
+    public void setNumPiecesInGrid(int num) {
+        this.numPiecesInGrid = num;
     }
 }

@@ -8,22 +8,12 @@ import android.view.View;
  */
 public interface IViewModelMain {
 
-    /**
-     * Allows the user to input text
-     * @param v View/Button we want to input text to
-     */
-    void inputText(View v);
-
-
 
     /**
-     * Allows the User to transition to the given Activity
-     *  - note provide switch statement on the types of pages we want to transition to based on
-     *  - the button clicked
-     * @param v View/Button we want this function to work on
-     *
+     * Determines if the game can be started
+     * @return boolean to determine if both players names are filled
      */
-    void nextPage(View v);
+    boolean playerNamesFilled();
 
 
 
