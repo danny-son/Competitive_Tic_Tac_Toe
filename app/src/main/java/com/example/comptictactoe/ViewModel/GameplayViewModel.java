@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.comptictactoe.Model.Moves;
-import com.example.comptictactoe.Model.Player;
-import com.example.comptictactoe.Model.PlayerFactory;
-import com.example.comptictactoe.Model.TicTacToe;
+import com.example.comptictactoe.Model.Game.Moves;
+import com.example.comptictactoe.Model.Game.Player;
+import com.example.comptictactoe.Model.Game.PlayerFactory;
+import com.example.comptictactoe.Model.Game.TicTacToe;
 
 
 public class GameplayViewModel extends ViewModel  {

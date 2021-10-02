@@ -1,8 +1,6 @@
-package com.example.comptictactoe.Model;
+package com.example.comptictactoe.Model.Game;
 
 
-
-import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 

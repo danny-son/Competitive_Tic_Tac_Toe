@@ -1,12 +1,16 @@
 package com.example.comptictactoe.Model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
+
+import com.example.comptictactoe.Model.Game.EmptyGP;
+import com.example.comptictactoe.Model.Game.O;
+import com.example.comptictactoe.Model.Game.TicTacToe;
+import com.example.comptictactoe.Model.Game.X;
 
 @RunWith(JUnit4.class)
 public class GamePieceTest {

@@ -1,6 +1,5 @@
 package com.example.comptictactoe.ViewModel;
 
-import android.view.View;
 
 /**
  * Interface to represent the main title screen for the player,
