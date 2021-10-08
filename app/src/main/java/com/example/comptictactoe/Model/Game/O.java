@@ -1,8 +1,4 @@
-package com.example.comptictactoe.Model;
-
-import androidx.annotation.Nullable;
-
-import com.example.comptictactoe.Model.AbstractGamePiece;
+package com.example.comptictactoe.Model.Game;
 
 /**
  * Class to Resemble 'O' GamePiece, Inherits from AbstractGamePiece

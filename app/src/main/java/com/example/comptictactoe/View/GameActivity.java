@@ -1,20 +1,19 @@
 package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.comptictactoe.Model.Adapter.GridAdapter;
-import com.example.comptictactoe.Model.GridSize;
-import com.example.comptictactoe.Model.Moves;
-import com.example.comptictactoe.Model.MovesEnabled;
-import com.example.comptictactoe.Model.Player;
-import com.example.comptictactoe.Model.TicTacToe;
+import com.example.comptictactoe.Model.Game.GridSize;
+import com.example.comptictactoe.Model.Game.Moves;
+import com.example.comptictactoe.Model.Game.MovesEnabled;
+import com.example.comptictactoe.Model.Game.Player;
+import com.example.comptictactoe.Model.Game.TicTacToe;
 import com.example.comptictactoe.R;
 import com.example.comptictactoe.ViewModel.GameplayViewModel;
 import com.example.comptictactoe.databinding.ActivityGameBinding;
@@ -24,7 +23,6 @@ import com.example.comptictactoe.databinding.ActivityGameBinding;
  * Activity to Represent our 3x3 grid
  */
 public class GameActivity extends AppCompatActivity {
-
 
     private GameplayViewModel gameViewModel;
     private ActivityGameBinding binding;
@@ -37,9 +35,9 @@ public class GameActivity extends AppCompatActivity {
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         gameViewModel = new ViewModelProvider(this).get(GameplayViewModel.class);
-
         int[] imageList = new int[9];
         gridAdapter = new GridAdapter(GameActivity.this, imageList);
+
         binding.gameGrid.setAdapter(gridAdapter);
         binding.gameGrid.setOnItemClickListener((adapterView, view, i, l) -> {
             int row = i / gameViewModel.getGame().getValue().getGrid().size();
@@ -50,11 +48,10 @@ public class GameActivity extends AppCompatActivity {
                 try {
                     gameViewModel.placePiece(player, row, col);
                     if (player.getGP().isOGamePiece()) {
-                        //TODO Update image to animate, for placing, scale from 0 -> 1.2 -> 1,
-                        // Also do a full rotation clockwise
-                        gridAdapter.updateImage(R.drawable.ic_o, i);
+                        gridAdapter.placeImage(R.drawable.ic_o, i, false);
+
                     } else if (player.getGP().isXGamePiece()) {
-                        gridAdapter.updateImage(R.drawable.ic_x, i);
+                        gridAdapter.placeImage(R.drawable.ic_x, i, false);
                     }
                     if (gameViewModel.isGameOver()) {
                         return;
@@ -69,8 +66,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             } else if (movesEnabled.getDelete() && !player.getTurnMade()) {
                 try {
-                    //TODO Update Image to animate, for deleting scale from 1 -> 1.2 -> 0
-                    // Also do a full rotation counterclockwise
                     gameViewModel.deletePiece(player, row, col);
                     gridAdapter.removeImage(i);
                     binding.movePieceInstructionsText.setText(getString(R.string.piece_deleted));
@@ -86,14 +81,11 @@ public class GameActivity extends AppCompatActivity {
                     binding.movePieceInstructionsText.setText(getString(R.string.swap_piece_two));
                 } else {
                     try {
-                        //TODO Update both images tp animate
-                        // start with Delete animation and then their new images will animate the
-                        // same as Place
                         gameViewModel.swapPieces(player, row, col);
                         int indexBefore = gameViewModel.retrieveSwapIndexBefore();
                         int imageIdBefore = (int) gridAdapter.getItem(indexBefore);
-                        gridAdapter.updateImage((int) gridAdapter.getItem(i), indexBefore);
-                        gridAdapter.updateImage(imageIdBefore, i);
+                        gridAdapter.placeImage((int) gridAdapter.getItem(i), indexBefore, true);
+                        gridAdapter.placeImage(imageIdBefore, i, true);
                         if (gameViewModel.isGameOver()) {
                             return;
                         }

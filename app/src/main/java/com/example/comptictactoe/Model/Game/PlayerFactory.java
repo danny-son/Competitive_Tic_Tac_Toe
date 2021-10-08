@@ -1,4 +1,4 @@
-package com.example.comptictactoe.Model;
+package com.example.comptictactoe.Model.Game;
 
 public class PlayerFactory {
     public PlayerFactory() {
