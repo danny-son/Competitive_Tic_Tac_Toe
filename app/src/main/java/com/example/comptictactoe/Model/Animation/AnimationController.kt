@@ -11,23 +11,52 @@ class AnimationController {
         val scaleXAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
             imageView,
             "scaleX",
-            0.0f, 1.0f)
+            0.0f, 1.0f
+        )
         val scaleYAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
             imageView,
-        "scaleY",
-        0.0f, 1.0f)
+            "scaleY",
+            0.0f, 1.0f
+        )
         val rotationAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
             imageView,
             "rotation",
-        0.0f,
-        360.0f)
+            0.0f,
+            360.0f
+        )
         scaleXAnimator.duration = animationDuration
         scaleYAnimator.duration = animationDuration
         rotationAnimator.duration = animationDuration
         with(AnimatorSet()) {
-            playTogether(scaleXAnimator,scaleYAnimator,rotationAnimator)
-            duration = animationDuration
+            playTogether(scaleXAnimator, scaleYAnimator, rotationAnimator)
             start()
         }
+    }
+
+    fun animateDelete(imageView: ImageView) {
+        val scaleXAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
+            imageView,
+            "scaleX",
+            1.0f, 0.0f
+        )
+        val scaleYAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
+            imageView,
+            "scaleY",
+            1.0f, 0.0f
+        )
+        val rotationAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
+            imageView,
+            "rotation",
+            0.0f,
+            -360.0f
+        )
+        scaleXAnimator.duration = animationDuration
+        scaleYAnimator.duration = animationDuration
+        rotationAnimator.duration = animationDuration
+        with(AnimatorSet()) {
+            playTogether(scaleXAnimator, scaleYAnimator, rotationAnimator)
+            start()
+        }
+
     }
 }

@@ -2,13 +2,15 @@ package com.example.comptictactoe.Model.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.example.comptictactoe.Model.Animation.AnimationController;
 import com.example.comptictactoe.Model.Game.GridSize;
@@ -18,15 +20,22 @@ import com.example.comptictactoe.Model.Animation.AnimationType;
 import java.util.HashMap;
 
 public class GridAdapter extends BaseAdapter {
-    private Context context;
+    private final Context context;
     private int[] drawableList;
+    private boolean deleteUsed = false;
+    private AnimationType animationType = AnimationType.EMPTY;
+
     //map containing the position and the animationType
-    HashMap<Integer, AnimationType> animationMap = new HashMap<>();
+    private final HashMap<Integer, AnimationType> animationMap = new HashMap<>();
     private GridSize gridSize;
     private final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     private final int imageSize = Math.min(((screenHeight + screenWidth) / 10), 350);
     private final AnimationController animationController = new AnimationController();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final long ANIMATION_DURATION = 500;
+    private int numFirstCalled = 0;
+    private boolean lastSwapCalled = false;
 
     LayoutInflater inflater;
 
@@ -61,7 +70,9 @@ public class GridAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.grid_item, null);
         }
-
+        if (i == 0 && animationType != AnimationType.EMPTY) {
+            numFirstCalled++;
+        }
         setUpImages(view, i);
         return view;
     }
@@ -77,13 +88,13 @@ public class GridAdapter extends BaseAdapter {
 
     /**
      * defines the parameters for our images (width and height), based on our current gridSize
+     *
      * @param view ImageView that our adapter is setting up
-     * @param i displays the position where that image is in our adapter
+     * @param i    displays the position where that image is in our adapter
      */
     private void setUpImages(View view, int i) {
+        Log.i("Position", "Position called: " + i);
         ImageView imageView = view.findViewById(R.id.grid_image);
-        Log.i("Dimension", String.valueOf(Resources.getSystem().getDisplayMetrics().widthPixels));
-        Log.i("Dimension", String.valueOf(Resources.getSystem().getDisplayMetrics().heightPixels));
         int size;
         switch (gridSize) {
             case FIVE_BY_FIVE:
@@ -96,31 +107,69 @@ public class GridAdapter extends BaseAdapter {
                 size = imageSize;
                 break;
         }
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(size,size));
-        imageView.setImageResource(drawableList[i]);
-        if (animationMap.get(i) == AnimationType.PLACE) {
+        if (animationMap.get(i) == AnimationType.DELETE) {
+            if ((i == 0 && numFirstCalled == 2) || (i != 0 && numFirstCalled == 2)) {
+                animationController.animateDelete(imageView);
+                animationMap.put(i, AnimationType.EMPTY);
+                animationType = AnimationType.EMPTY;
+                deleteUsed = true;
+                numFirstCalled = 0;
+            }
+        }
+        if (deleteUsed) {
+            deleteUsed = false;
+            handler.postDelayed(() -> {
+                imageView.setLayoutParams(new FrameLayout.LayoutParams(size, size));
+                imageView.setImageResource(drawableList[i]);
+            }, ANIMATION_DURATION);
+        } else {
+            imageView.setLayoutParams(new FrameLayout.LayoutParams(size, size));
+            imageView.setImageResource(drawableList[i]);
+        }
+        if (animationMap.get(i) == AnimationType.PLACE && numFirstCalled == 2) {
             Log.i("Animation", "Animation Should Play!");
             animationController.animatePlace(imageView);
             animationMap.put(i, AnimationType.EMPTY);
+            animationType = AnimationType.EMPTY;
+            numFirstCalled = 0;
+        } else if (animationMap.get(i) == AnimationType.SWAP && numFirstCalled == 2) {
+            animationController.animatePlace(imageView);
+            animationMap.put(i, AnimationType.EMPTY);
+            if (lastSwapCalled) {
+                numFirstCalled = 0;
+                lastSwapCalled = false;
+                animationType = AnimationType.EMPTY;
+            } else {
+                lastSwapCalled = true;
+            }
         }
     }
 
     /**
      * Updates an image in our adapter
      *
-     * @param id the id that contains our drawable
+     * @param id       the id that contains our drawable
      * @param position index in our image list
      */
-    public void placeImage(int id, int position) {
+    public void placeImage(int id, int position, boolean swap) {
         this.drawableList[position] = id;
-        this.animationMap.put(position, AnimationType.PLACE);
+        if (swap) {
+            this.animationMap.put(position, AnimationType.SWAP);
+            animationType = AnimationType.SWAP;
+        } else {
+            this.animationMap.put(position, AnimationType.PLACE);
+            animationType = AnimationType.PLACE;
+        }
         this.notifyDataSetChanged();
     }
 
     public void removeImage(int position) {
         this.drawableList[position] = 0;
+        this.animationMap.put(position, AnimationType.DELETE);
+        animationType = AnimationType.DELETE;
         this.notifyDataSetChanged();
     }
+
 
     /**
      * updates the whole list of our images
@@ -149,6 +198,7 @@ public class GridAdapter extends BaseAdapter {
                 prevIndex++;
             }
         }
+        setUpAnimationMap();
         updateImageList(newImageList);
     }
 
