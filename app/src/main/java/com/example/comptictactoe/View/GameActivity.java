@@ -50,8 +50,6 @@ public class GameActivity extends AppCompatActivity {
                 try {
                     gameViewModel.placePiece(player, row, col);
                     if (player.getGP().isOGamePiece()) {
-                        //TODO Update image to animate, for placing, scale from 0 -> 1.2 -> 1,
-                        // Also do a full rotation clockwise
                         gridAdapter.updateImage(R.drawable.ic_o, i);
                     } else if (player.getGP().isXGamePiece()) {
                         gridAdapter.updateImage(R.drawable.ic_x, i);
@@ -69,8 +67,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             } else if (movesEnabled.getDelete() && !player.getTurnMade()) {
                 try {
-                    //TODO Update Image to animate, for deleting scale from 1 -> 1.2 -> 0
-                    // Also do a full rotation counterclockwise
                     gameViewModel.deletePiece(player, row, col);
                     gridAdapter.removeImage(i);
                     binding.movePieceInstructionsText.setText(getString(R.string.piece_deleted));
@@ -86,9 +82,6 @@ public class GameActivity extends AppCompatActivity {
                     binding.movePieceInstructionsText.setText(getString(R.string.swap_piece_two));
                 } else {
                     try {
-                        //TODO Update both images tp animate
-                        // start with Delete animation and then their new images will animate the
-                        // same as Place
                         gameViewModel.swapPieces(player, row, col);
                         int indexBefore = gameViewModel.retrieveSwapIndexBefore();
                         int imageIdBefore = (int) gridAdapter.getItem(indexBefore);

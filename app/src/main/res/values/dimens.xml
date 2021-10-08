@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <dimen name="move_button_width">120dp</dimen>
+   <dimen name="grid_spacing">2dp</dimen>
+   <dimen name="turn_number_font_size">20sp</dimen>
+   <dimen name="player_text_margin">20dp</dimen>
+   <dimen name="move_piece_text_size">20sp</dimen>
+   <dimen name="game_status_font_size">24sp</dimen>
+   <dimen name="game_title_font_size">40sp</dimen>
 </resources>
