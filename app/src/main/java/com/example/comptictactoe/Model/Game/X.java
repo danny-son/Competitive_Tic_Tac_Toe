@@ -1,6 +1,4 @@
-package com.example.comptictactoe.Model;
-
-import com.example.comptictactoe.Model.AbstractGamePiece;
+package com.example.comptictactoe.Model.Game;
 
 /**
  * Class to Resemble 'X' GamePiece, Inherits from AbstractGamePiece
