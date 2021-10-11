@@ -5,8 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".View.MainActivity">
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -18,48 +24,55 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="@dimen/game_title_font_size"
         android:typeface="serif"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
 
     <EditText
         android:id="@+id/player_one_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:ems="10"
         android:hint="@string/enter_player_one_s_name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/player_two_name_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        android:layout_gravity="center"
+        android:minHeight="48dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <EditText
         android:id="@+id/player_two_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="284dp"
-        android:autofillHints=""
-        android:ems="10"
         android:hint="@string/enter_player_two_s_name"
         android:inputType="textPersonName"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:minHeight="48dp"
+        android:layout_gravity="center"
+        android:textSize="18sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 
+
+
+    <Button
+        android:id="@+id/instructions_button"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/instruction_button"/>
 
     <Button
         android:id="@+id/play_game_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="148dp"
-        android:text="@string/play"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_gravity="center"
+        android:text="@string/play" />
 
 </LinearLayout>
