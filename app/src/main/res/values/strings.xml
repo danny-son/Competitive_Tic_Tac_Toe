@@ -30,4 +30,6 @@
     <string name="extra_turn_text">Gained an Extra Turn!</string>
     <string name="game_over">%s Wins!</string>
     <string name="instruction_button">How to Play</string>
+    <string name="instruction_title">Instructions</string>
+    <string name="instruction_how_to_play">How to Play:</string>
 </resources>

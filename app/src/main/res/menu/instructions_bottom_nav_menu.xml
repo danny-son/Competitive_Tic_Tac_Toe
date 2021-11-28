@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/how_to_play_item"
+        android:title="How To Play"
+        android:icon="@drawable/ic_page_one"/>
+
+    <item
+        android:id="@+id/moves_item"
+        android:title="Moves"
+        android:icon="@drawable/ic_page_two"/>
+
+    <item
+        android:id="@+id/how_to_gain_points_item"
+        android:title="Gain Points"
+        android:icon="@drawable/ic_page_three"/>
+
+    <item
+        android:id="@+id/how_to_increase_grid_item"
+        android:title="Increase Grid"
+        android:icon="@drawable/ic_page_four"/>
+
+
+</menu>
