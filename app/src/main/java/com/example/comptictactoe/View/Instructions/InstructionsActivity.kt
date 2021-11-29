@@ -1,17 +1,14 @@
 package com.example.comptictactoe.View.Instructions
 
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.comptictactoe.InstructionIncreaseGrid
 import com.example.comptictactoe.R
+import com.example.comptictactoe.View.MainActivity
 import com.example.comptictactoe.databinding.ActivityInstructionsBinding
-import com.google.android.material.bottomnavigation.BottomNavigationMenu
 
 class InstructionsActivity : AppCompatActivity() {
 
@@ -29,6 +26,12 @@ class InstructionsActivity : AppCompatActivity() {
             .commit()
         // sets up our bottom navigation
         setUpBottomNavigation()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        startActivityForResult(intent, 0)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setUpBottomNavigation() {
