@@ -1,7 +1,6 @@
 package com.example.comptictactoe.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -11,6 +10,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.comptictactoe.View.Instructions.InstructionsActivity;
 import com.example.comptictactoe.ViewModel.ViewModelMainImpl;
 import com.example.comptictactoe.databinding.ActivityMainBinding;
 
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         mainViewModel = new ViewModelProvider(this).get(ViewModelMainImpl.class);
         setContentView(binding.getRoot());
-        binding.playGameButton.setOnClickListener(view -> nextPage());
+        binding.playGameButton.setOnClickListener(view -> playGameClicked());
+        binding.instructionsButton.setOnClickListener(view -> navigateToInstructions());
         binding.playerOneNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void nextPage() {
+    private void playGameClicked() {
         try {
             if (mainViewModel.playerNamesFilled()) {
                 Log.i("Player", mainViewModel.getPlayerOne().getValue());
@@ -80,5 +82,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Both names needs to be inputted!",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void navigateToInstructions() {
+        Intent intent = new Intent(this, InstructionsActivity.class);
+        startActivity(intent);
     }
 }

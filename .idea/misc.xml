@@ -6,10 +6,23 @@
         <entry key="..\:/Users/danny/StudioProjects/Competitive_Tic_Tac_Toe/app/src/main/res/layout/activity_game.xml" value="0.23007246376811594" />
         <entry key="..\:/Users/danny/StudioProjects/Competitive_Tic_Tac_Toe/app/src/main/res/layout/activity_game_3x3.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/drawable-anydpi/ic_o.xml" value="0.2786458333333333" />
-        <entry key="app/src/main/res/layout/activity_game.xml" value="0.2984016306791425" />
+        <entry key="app/src/main/res/layout/activity_game.xml" value="0.21262277296147358" />
+        <entry key="app/src/main/res/layout/activity_instrucitons.xml" value="0.21666666666666667" />
+        <entry key="app/src/main/res/layout/activity_instruction.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_instructions.xml" value="0.32123283285654375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23150832874877178" />
         <entry key="app/src/main/res/layout/fragment_grid3x3.xml" value="0.21603260869565216" />
+        <entry key="app/src/main/res/layout/fragment_instruction_gain_points.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_instruction_increase_grid.xml" value="0.4004264361023427" />
+        <entry key="app/src/main/res/layout/fragment_instructions_how_to_play.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_instructions_moves.xml" value="0.2553816478917674" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/instructions_how_to_gain_points.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/instructions_how_to_increase_grid.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/instructions_moves.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/instructions_navigation_graph.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/instructions_bottom_nav_menu.xml" value="0.1001077472485169" />
+        <entry key="app/src/main/res/menu/instructions_botton_nav_menu.xml" value="0.2590366421518384" />
       </map>
     </option>
   </component>

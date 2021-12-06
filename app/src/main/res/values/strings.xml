@@ -1,19 +1,25 @@
 <resources>
-    <string name="app_name">CompTicTacToe</string>
-    <string name="competitive_tic_tac_toe">Competitive Tic Tac Toe!</string>
-    <string name="button">Button</string>
+
+    <!-- HOME SCREEN STRING VALUES !-->
+    <string name="app_name">Competitive Tic Tac Toe</string>
+    <string name="competitive_tic_tac_toe">Competitive\nTic Tac Toe!</string>
+    <string name="enter_player_1">Enter player 1</string>
+    <string name="enter_player_2_s_name">Enter Player 2\'s Name</string>
+    <string name="enter_player_two_s_name">Enter Player Two\'s Name</string>
+    <string name="enter_player_one_s_name">Enter Player One\'s Name</string>
+    <string name="play">Play!</string>
+    <string name="enter">Enter</string>
+    <string name="instruction_button">How to Play</string>
+    <string name="instruction_title">Instructions</string>
+    <string name="instruction_how_to_play">How to Play:</string>
+
+    <!-- GAMEPLAY STRING VALUES !-->
+    <string name="swap">Swap: -%d</string>
     <string name="end_turn">End Turn: +%d</string>
     <string name="select_a_piece_to_move">Select a Piece to Move</string>
     <string name="move">Move</string>
     <string name="delete">Delete: -%d</string>
     <string name="place">Place: FREE</string>
-    <string name="play">Play!</string>
-    <string name="enter">Enter</string>
-    <string name="enter_player_1">Enter player 1</string>
-    <string name="enter_player_2_s_name">Enter Player 2\'s Name</string>
-    <string name="enter_player_two_s_name">Enter Player Two\'s Name</string>
-    <string name="enter_player_one_s_name">Enter Player One\'s Name</string>
-    <string name="swap">Swap: -%d</string>
     <string name="player_one_header">%s: %d</string>
     <string name="player_two_header">%s: %d</string>
     <string name="extra_turn">Extra Turn: -%d</string>
@@ -29,5 +35,37 @@
     <string name="swap_complete">Pieces Swapped!</string>
     <string name="extra_turn_text">Gained an Extra Turn!</string>
     <string name="game_over">%s Wins!</string>
-    <string name="instruction_button">How to Play</string>
+
+
+    <!-- INSTRUCTIONS STRING VALUES !-->
+
+    <!-- Menu Navigation Titles !-->
+    <string name="menu_title_moves">Moves</string>
+    <string name="menu_title_gain_points">Gain Points</string>
+    <string name="menu_title_increase_grid">Increase Grid</string>
+
+    <!-- How to Play !-->
+    <string name="how_to_play_intro">Like Regular Tic-Tac-Toe, Players must connect all of their pieces (X or O) either</string>
+    <string name="how_to_play_horizontally">Horizontally:</string>
+    <string name="how_to_play_vertically">Vertically:</string>
+    <string name="how_to_play_diagonally">Diagonally:</string>
+    <string name="how_to_play_body">But instead of just placing your piece on the grid, players now have the option to perform other moves (click on moves on the bottom bar to find out more info about moves).\n\nEach move contains a number next to it, which indicates the cost in order to perform that move.\n\nEach player at the beginning of the game starts out with 2 points (see "How to Gain Points" to learn how to gain points in the game).</string>
+
+    <!-- Moves !-->
+    <string name="moves_title">Moves:</string>
+    <string name="moves_place"><b>Place: </b>allows players to place a piece on the grid.\n<b>Initial cost:</b> Free!</string>
+    <string name="moves_delete"><b>Delete: </b>allows players to delete the opponents piece on the grid. \n<b>Initial Cost: 2 points </b>\n<b>Cost Increase per Use:</b> +1</string>
+    <string name="moves_swap"><b>Swap: </b>allows players to swap between two positions on the grid. \n<b>Initial Cost: </b> 3 points \n<b>Cost Increase per Use:</b> +2</string>
+    <string name="moves_extra_turn"><b>Extra Turn: </b>allows players to gain an extra turn to perform another move. Note: this can only be used once per turn, and the player has to already use it\'s turn prior in order to perform this move. \n<b>Initial Cost:</b> 5 points \n<b>Cost Increase per Use:</b> +3</string>
+
+    <!-- How to Gain Points !-->
+    <string name="gain_points_title">How to Gain Points:</string>
+    <string name="gain_points_body_one">In order to gain points, players must place their game pieces adjacent to each other (Note: pieces can only be adjacent to one other piece, examples shown below).</string>
+    <string name="gain_points_body_two">When the player decides to end their turn, the "End Turn" button displays a number next to it, which shows the number of points that player will gain from that turn.</string>
+
+    <!-- How to Increase Grid !-->
+    <string name="increase_grid_title">How to Increase Grid:</string>
+    <string name="increase_grid_intro">In regular Tic-Tac-Toe, the grid size is always 3x3. In this game however, players now have the option to increase the grid to 5x5 and 7x7.</string>
+    <string name="increase_grid_body">In order to increase the grid size, the number of turns displaying in the button "Increase Size" must be 0, which happens when a player ends their turn, decreasing that number by one.</string>
+
 </resources>

@@ -7,4 +7,7 @@
    <dimen name="move_piece_text_size">20sp</dimen>
    <dimen name="game_status_font_size">24sp</dimen>
    <dimen name="game_title_font_size">40sp</dimen>
+
+
+   <dimen name="menu_title">32sp</dimen>
 </resources>
