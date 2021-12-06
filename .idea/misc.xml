@@ -13,9 +13,9 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23150832874877178" />
         <entry key="app/src/main/res/layout/fragment_grid3x3.xml" value="0.21603260869565216" />
         <entry key="app/src/main/res/layout/fragment_instruction_gain_points.xml" value="0.23072916666666668" />
-        <entry key="app/src/main/res/layout/fragment_instruction_increase_grid.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/fragment_instruction_increase_grid.xml" value="0.4004264361023427" />
         <entry key="app/src/main/res/layout/fragment_instructions_how_to_play.xml" value="0.23072916666666668" />
-        <entry key="app/src/main/res/layout/fragment_instructions_moves.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_instructions_moves.xml" value="0.2553816478917674" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.25104166666666666" />
         <entry key="app/src/main/res/layout/instructions_how_to_gain_points.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/instructions_how_to_increase_grid.xml" value="0.23072916666666668" />

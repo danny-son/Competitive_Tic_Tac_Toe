@@ -49,14 +49,14 @@
     <string name="how_to_play_horizontally">Horizontally:</string>
     <string name="how_to_play_vertically">Vertically:</string>
     <string name="how_to_play_diagonally">Diagonally:</string>
-    <string name="how_to_play_body">But instead of just placing your piece on the grid, players now have the option to perform other moves (click on moves on the bottom bar to find out more info about moves)/nEach move contains a number next to it, which indicates the cost in order to perform that move./nEach player at the beginning of the game starts out with 2 points (see "How to Gain Points" to learn how to gain points in the game).</string>
+    <string name="how_to_play_body">But instead of just placing your piece on the grid, players now have the option to perform other moves (click on moves on the bottom bar to find out more info about moves).\n\nEach move contains a number next to it, which indicates the cost in order to perform that move.\n\nEach player at the beginning of the game starts out with 2 points (see "How to Gain Points" to learn how to gain points in the game).</string>
 
     <!-- Moves !-->
     <string name="moves_title">Moves:</string>
-    <string name="moves_place"><b>Place: </b>allows players to place a piece on the grid. /nInitial cost: Free!</string>
-    <string name="moves_delete"><b>Delete: </b>allows players to delete the opponents piece on the grid. /nInitial Cost: 2 points /nCost Increase per Use: +1</string>
-    <string name="moves_swap"><b>Swap: </b>allows players to swap between two positions on the grid. /nInitial Cost: 3 points /nCost Increase per Use: +2</string>
-    <string name="moves_extra_turn"><b>Extra Turn: </b>allows players to gain an extra turn to perform another move. Note: this can only be used once per turn, and the player has to already use it\'s turn prior in order to perform this move. /nInitial Cost: 5 points /nCost Increase per Use: +3</string>
+    <string name="moves_place"><b>Place: </b>allows players to place a piece on the grid.\n<b>Initial cost:</b> Free!</string>
+    <string name="moves_delete"><b>Delete: </b>allows players to delete the opponents piece on the grid. \n<b>Initial Cost: 2 points </b>\n<b>Cost Increase per Use:</b> +1</string>
+    <string name="moves_swap"><b>Swap: </b>allows players to swap between two positions on the grid. \n<b>Initial Cost: </b> 3 points \n<b>Cost Increase per Use:</b> +2</string>
+    <string name="moves_extra_turn"><b>Extra Turn: </b>allows players to gain an extra turn to perform another move. Note: this can only be used once per turn, and the player has to already use it\'s turn prior in order to perform this move. \n<b>Initial Cost:</b> 5 points \n<b>Cost Increase per Use:</b> +3</string>
 
     <!-- How to Gain Points !-->
     <string name="gain_points_title">How to Gain Points:</string>
@@ -67,33 +67,5 @@
     <string name="increase_grid_title">How to Increase Grid:</string>
     <string name="increase_grid_intro">In regular Tic-Tac-Toe, the grid size is always 3x3. In this game however, players now have the option to increase the grid to 5x5 and 7x7.</string>
     <string name="increase_grid_body">In order to increase the grid size, the number of turns displaying in the button "Increase Size" must be 0, which happens when a player ends their turn, decreasing that number by one.</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </resources>

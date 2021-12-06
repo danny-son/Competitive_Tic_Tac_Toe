@@ -16,10 +16,44 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
-            android:textSize="32sp"
-            android:text="@string/gain_points_title" />
+            android:layout_marginTop="20dp"
+            android:text="@string/gain_points_title"
+            android:textSize="32sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/gain_points_body_one"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="20dp"
+            android:src="@drawable/valid_adjacent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="20dp"
+            android:src="@drawable/stacked_adjacent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:text="@string/gain_points_body_two"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="20dp"
+            android:src="@drawable/end_turn_display"/>
+
 
     </LinearLayout>
 </ScrollView>
